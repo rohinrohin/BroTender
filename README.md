@@ -10,4 +10,4 @@ Order your favorite meal from last week, or better yet, invite your friend to tr
 Don't ask for the bill anymore.
 Use BroTender to avoid awkward counting and tallying while splitting the bill. Seamlessly pay online and be on your way.
 
-We won't be able to get you your drink, but feel free to get a feel of our bot at m.me/brobarbot
+We won't be able to get you your drink, but feel free to get a feel of our bot at https://m.me/brobarbot
