@@ -1,0 +1,151 @@
+{
+  "data" : [
+    {
+      "type" : "template",
+      "quickreplies" : [
+        "Table",
+        "Split"
+      ]
+    },
+    {
+      "id" : "template-Goodbye :) If you had a good time, send a thumbs up, otherwise send a thumbs down.",
+      "type" : "template",
+      "template" : "Goodbye :) If you had a good time, send a thumbs up, otherwise send a thumbs down.",
+      "quickreplies" : [
+        "Thumbs Up!",
+        "Thumbs Down x/"
+      ]
+    },
+    {
+      "id" : "template-Goodbye! :)",
+      "type" : "template",
+      "template" : "Goodbye! :)"
+    },
+    {
+      "id" : "template-Goodbye! :) Hope you had a  good experience at BroBar. See you soon. ",
+      "type" : "template",
+      "template" : "Goodbye! :) Hope you had a  good experience at BroBar. See you soon. "
+    },
+    {
+      "id" : "template-Got it. How about some drinks then?",
+      "type" : "template",
+      "template" : "Got it. How about some drinks then?",
+      "quickreplies" : [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "id" : "template-Gp",
+      "type" : "template",
+      "template" : "Gp"
+    },
+    {
+      "id" : "template-How would you like to ",
+      "type" : "template",
+      "template" : "How would you like to "
+    },
+    {
+      "id" : "template-How would you like to calculate the bill?",
+      "type" : "template",
+      "template" : "How would you like to calculate the bill?",
+      "quickreplies" : [
+        "Table",
+        "Split"
+      ]
+    },
+    {
+      "id" : "template-Just one more question, if I may ask, which dish did you like the most?",
+      "type" : "template",
+      "template" : "Just one more question, if I may ask, which dish did you like the most?"
+    },
+    {
+      "id" : "template-Okay. Feel free to ask me anything else you'd like to order. ",
+      "type" : "template",
+      "template" : "Okay. Feel free to ask me anything else you'd like to order. "
+    },
+    {
+      "id" : "template-See you later! :) If you had a good experience, please do thumbs up, otherwise send a thumbs down.",
+      "type" : "template",
+      "template" : "See you later! :) If you had a good experience, please do thumbs up, otherwise send a thumbs down.",
+      "quickreplies" : [
+        "Thumbs Up!",
+        "Thumbs down x/"
+      ]
+    },
+    {
+      "id" : "template-Sorry, maybe next time. ",
+      "type" : "template",
+      "template" : "Sorry, maybe next time. "
+    },
+    {
+      "id" : "template-Thanks :)",
+      "type" : "template",
+      "template" : "Thanks :)"
+    },
+    {
+      "id" : "template-Thanks :) Which dish did you enjoy the most?",
+      "type" : "template",
+      "template" : "Thanks :) Which dish did you enjoy the most?",
+      "quickreplies" : [
+        "Spring Rolls",
+        "Sambar Rice",
+        "Nothing as such"
+      ]
+    },
+    {
+      "id" : "template-Thanks again, see you soon.",
+      "type" : "template",
+      "template" : "Thanks again, see you soon."
+    },
+    {
+      "id" : "template-Thanks, see you soon :)",
+      "type" : "template",
+      "template" : "Thanks, see you soon :)"
+    },
+    {
+      "id" : "template-Uh oh, maybe next time?",
+      "type" : "template",
+      "template" : "Uh oh, maybe next time?"
+    },
+    {
+      "id" : "template-^drinks^",
+      "type" : "template",
+      "template" : "^drinks^"
+    },
+    {
+      "id" : "template-^intro^",
+      "type" : "template",
+      "template" : "^intro^",
+      "quickreplies" : [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "id" : "template-^menu",
+      "type" : "template",
+      "template" : "^menu"
+    },
+    {
+      "id" : "template-^menu^",
+      "type" : "template",
+      "template" : "^menu^"
+    },
+    {
+      "id" : "template-^specials^",
+      "type" : "template",
+      "template" : "^specials^"
+    },
+    {
+      "id" : "template-^starters^",
+      "type" : "template",
+      "template" : "^starters^"
+    },
+    {
+      "id" : "template-you said yes to menu",
+      "type" : "template",
+      "template" : "you said yes to menu"
+    }
+  ]
+}

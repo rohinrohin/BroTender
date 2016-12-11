@@ -1,0 +1,49 @@
+{
+  "data" : {
+    "lookups" : [
+      "trait"
+    ],
+    "name" : "menu",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "menu",
+    "values" : [
+      {
+        "value" : "all",
+        "expressions" : [
+          "all"
+        ]
+      },
+      {
+        "value" : "desserts",
+        "expressions" : [
+          "desserts"
+        ]
+      },
+      {
+        "value" : "drinks",
+        "expressions" : [
+          "drinks"
+        ]
+      },
+      {
+        "value" : "mains"
+      },
+      {
+        "value" : "specials",
+        "metadata" : "special",
+        "expressions" : [
+          "specials"
+        ]
+      },
+      {
+        "value" : "starters",
+        "expressions" : [
+          "starters"
+        ]
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

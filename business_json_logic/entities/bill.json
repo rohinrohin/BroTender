@@ -1,0 +1,21 @@
+{
+  "data" : {
+    "lookups" : [
+      "trait"
+    ],
+    "name" : "bill",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "bill",
+    "values" : [
+      {
+        "value" : "group"
+      },
+      {
+        "value" : "split"
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

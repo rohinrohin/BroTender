@@ -1,0 +1,162 @@
+{
+  "data" : [
+    {
+      "name" : "",
+      "turns" : [
+        {
+          "user" : "Hey",
+          "entities" : [
+            {
+              "entity" : "intent",
+              "value" : "\"greeting\""
+            }
+          ],
+          "operations" : [
+            {
+              "action" : "template-^intro^"
+            }
+          ]
+        },
+        {
+          "branches" : [
+            [
+              {
+                "user" : "Yes",
+                "entities" : [
+                  {
+                    "entity" : "yes_no",
+                    "value" : "\"yes\""
+                  }
+                ],
+                "operations" : [
+                  {
+                    "action" : "template-^specials^"
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                "user" : "No",
+                "entities" : [
+                  {
+                    "entity" : "yes_no",
+                    "value" : "\"no\""
+                  }
+                ],
+                "operations" : [
+                  {
+                    "action" : "template-Got it. How about some drinks then?"
+                  }
+                ]
+              },
+              {
+                "branches" : [
+                  [
+                    {
+                      "user" : "Yes",
+                      "entities" : [
+                        {
+                          "entity" : "yes_no",
+                          "value" : "\"yes\""
+                        }
+                      ],
+                      "operations" : [
+                        {
+                          "action" : "template-^drinks^"
+                        }
+                      ]
+                    }
+                  ],
+                  [
+                    {
+                      "user" : "No",
+                      "entities" : [
+                        {
+                          "entity" : "yes_no",
+                          "value" : "\"no\""
+                        }
+                      ],
+                      "operations" : [
+                        {
+                          "action" : "template-Okay. Feel free to ask me anything else you'd like to order. "
+                        }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "",
+      "turns" : [
+        {
+          "user" : "show me the menu",
+          "entities" : [ ],
+          "operations" : [
+            {
+              "action" : "template-^menu^"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "",
+      "turns" : [
+        {
+          "user" : "what are the starters?",
+          "entities" : [ ],
+          "operations" : [
+            {
+              "action" : "template-^menu^"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "",
+      "turns" : [
+        {
+          "user" : "What are you specials?",
+          "entities" : [ ],
+          "operations" : [
+            {
+              "action" : "template-^menu^"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "",
+      "turns" : [
+        {
+          "user" : "pay",
+          "entities" : [
+            {
+              "entity" : "intent",
+              "value" : "\"pay\""
+            }
+          ],
+          "operations" : [
+            {
+              "action" : "template-How would you like to calculate the bill?"
+            }
+          ]
+        },
+        {
+          "branches" : [
+            [ ],
+            [ ]
+          ]
+        }
+      ]
+    }
+  ]
+}

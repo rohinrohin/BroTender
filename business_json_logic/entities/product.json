@@ -1,0 +1,100 @@
+{
+  "data" : {
+    "lookups" : [
+      "free-text",
+      "keywords"
+    ],
+    "name" : "product",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "product",
+    "values" : [
+      {
+        "value" : "Bloody mary",
+        "expressions" : [
+          "bloody mary",
+          "spicy"
+        ]
+      },
+      {
+        "value" : "Dark forest cake",
+        "expressions" : [
+          "Dark forest cake",
+          "cake",
+          "sweet"
+        ]
+      },
+      {
+        "value" : "Fish curry",
+        "expressions" : [
+          "Fish curry",
+          "fish",
+          "spicy"
+        ]
+      },
+      {
+        "value" : "Fries",
+        "expressions" : [
+          "cheesy",
+          "french fries"
+        ]
+      },
+      {
+        "value" : "Jaigerbombs",
+        "expressions" : [
+          "Jaigerbombs"
+        ]
+      },
+      {
+        "value" : "Lamb burger",
+        "expressions" : [
+          "Lamb burger",
+          "burger",
+          "spicy"
+        ]
+      },
+      {
+        "value" : "Mojito",
+        "expressions" : [
+          "Mojito"
+        ]
+      },
+      {
+        "value" : "Paneer manchurian",
+        "expressions" : [
+          "Paneer manchurian",
+          "crunchy",
+          "manchurian",
+          "paneer"
+        ]
+      },
+      {
+        "value" : "Sambar rice",
+        "expressions" : [
+          "Sambar rice",
+          "rice",
+          "sambar",
+          "spicy"
+        ]
+      },
+      {
+        "value" : "Spring roll",
+        "expressions" : [
+          "Spring roll",
+          "crunchy",
+          "roll"
+        ]
+      },
+      {
+        "value" : "Vanilla ice cream",
+        "expressions" : [
+          "Vanilla ice cream",
+          "ice cream",
+          "vanilla"
+        ]
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

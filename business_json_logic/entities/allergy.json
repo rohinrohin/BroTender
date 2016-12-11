@@ -1,0 +1,52 @@
+{
+  "data" : {
+    "lookups" : [
+      "free-text",
+      "keywords"
+    ],
+    "name" : "allergy",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "allergy",
+    "values" : [
+      {
+        "value" : " peanuts",
+        "expressions" : [
+          " peanuts"
+        ]
+      },
+      {
+        "value" : "bananas",
+        "expressions" : [
+          "bananas"
+        ]
+      },
+      {
+        "value" : "basil",
+        "expressions" : [
+          "basil"
+        ]
+      },
+      {
+        "value" : "coconut",
+        "expressions" : [
+          "coconut"
+        ]
+      },
+      {
+        "value" : "cumin",
+        "expressions" : [
+          "cumin"
+        ]
+      },
+      {
+        "value" : "peanut",
+        "expressions" : [
+          "peanut"
+        ]
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

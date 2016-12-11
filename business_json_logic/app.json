@@ -1,0 +1,9 @@
+{
+  "version" : 20160513,
+  "zip-command" : "zip BroTender.zip BroTender/app.json BroTender/entities/*.json BroTender/actions.json BroTender/stories.json BroTender/expressions.json",
+  "data" : {
+    "name" : "BroTender",
+    "description" : "",
+    "lang" : "en"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "data" : {
+    "lookups" : [
+      "free-text",
+      "keywords"
+    ],
+    "name" : "checkout",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "checkout",
+    "values" : [
+      {
+        "value" : " table",
+        "expressions" : [
+          " table"
+        ]
+      },
+      {
+        "value" : "split",
+        "expressions" : [
+          "split"
+        ]
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

@@ -1,0 +1,861 @@
+{
+  "data" : [
+    {
+      "text" : "@rohin is joining me"
+    },
+    {
+      "text" : "@rohin is joining me today",
+      "entities" : [
+        {
+          "entity" : "joinuser",
+          "value" : "\"@rohin\"",
+          "start" : 0,
+          "end" : 6
+        }
+      ]
+    },
+    {
+      "text" : "@user is joining me",
+      "entities" : [
+        {
+          "entity" : "joinuser",
+          "value" : "\"@user\"",
+          "start" : 0,
+          "end" : 5
+        }
+      ]
+    },
+    {
+      "text" : "Hello",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"greeting\""
+        }
+      ]
+    },
+    {
+      "text" : "Hey",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"greeting\""
+        }
+      ]
+    },
+    {
+      "text" : "Hi",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"greeting\""
+        }
+      ]
+    },
+    {
+      "text" : "I am allergic to bananas",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"bananas\"",
+          "start" : 17,
+          "end" : 24
+        }
+      ]
+    },
+    {
+      "text" : "I am allergic to peanuts",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\" peanuts\"",
+          "start" : 16,
+          "end" : 24
+        }
+      ]
+    },
+    {
+      "text" : "I am allergic to sugar"
+    },
+    {
+      "text" : "I dont want that",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"no\""
+        }
+      ]
+    },
+    {
+      "text" : "I enjoyed the spring rolls",
+      "entities" : [
+        {
+          "entity" : "quantity",
+          "value" : "1",
+          "start" : 14,
+          "end" : 25
+        }
+      ]
+    },
+    {
+      "text" : "I have a banana allergy",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"bananas\""
+        }
+      ]
+    },
+    {
+      "text" : "I have a peanut allergy",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"peanut\"",
+          "start" : 9,
+          "end" : 15
+        }
+      ]
+    },
+    {
+      "text" : "I have a sugar allergy",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"sugar \"",
+          "start" : 9,
+          "end" : 15
+        }
+      ]
+    },
+    {
+      "text" : "I like peanuts"
+    },
+    {
+      "text" : "I loved the rice",
+      "entities" : [
+        {
+          "entity" : "quantity",
+          "value" : "1",
+          "start" : 12,
+          "end" : 16
+        }
+      ]
+    },
+    {
+      "text" : "I loved the spring rolls",
+      "entities" : [
+        {
+          "entity" : "quantity",
+          "value" : "1",
+          "start" : 12,
+          "end" : 23
+        }
+      ]
+    },
+    {
+      "text" : "I want something cheesy to eat"
+    },
+    {
+      "text" : "I want something sweet from the menu"
+    },
+    {
+      "text" : "I want to see some starters",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "I want to split the bill",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"split\""
+        }
+      ]
+    },
+    {
+      "text" : "I'm allergic to basil",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"basil\"",
+          "start" : 16,
+          "end" : 21
+        }
+      ]
+    },
+    {
+      "text" : "I'm allergic to cumin",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"cumin\"",
+          "start" : 16,
+          "end" : 21
+        }
+      ]
+    },
+    {
+      "text" : "No",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"no\""
+        }
+      ]
+    },
+    {
+      "text" : "Nothing as such"
+    },
+    {
+      "text" : "Sambar Rice"
+    },
+    {
+      "text" : "Split",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"split\""
+        }
+      ]
+    },
+    {
+      "text" : "Spring Rolls"
+    },
+    {
+      "text" : "Sure",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"yes\""
+        }
+      ]
+    },
+    {
+      "text" : "Table",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"group\""
+        }
+      ]
+    },
+    {
+      "text" : "Thumbs Down x/"
+    },
+    {
+      "text" : "Thumbs Up!"
+    },
+    {
+      "text" : "Thumbs down x/"
+    },
+    {
+      "text" : "What are you specials?"
+    },
+    {
+      "text" : "Whats special on the menu?"
+    },
+    {
+      "text" : "Yes",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"yes\""
+        }
+      ]
+    },
+    {
+      "text" : "allergic to coconut",
+      "entities" : [
+        {
+          "entity" : "allergy",
+          "value" : "\"coconut\"",
+          "start" : 12,
+          "end" : 19
+        }
+      ]
+    },
+    {
+      "text" : "awesome",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"yes\""
+        }
+      ]
+    },
+    {
+      "text" : "bill",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"group\""
+        }
+      ]
+    },
+    {
+      "text" : "bill please",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"group\""
+        }
+      ]
+    },
+    {
+      "text" : "bye",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"bye\""
+        }
+      ]
+    },
+    {
+      "text" : "can I have the bill please",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"group\""
+        }
+      ]
+    },
+    {
+      "text" : "can you split the bill please",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"split\""
+        }
+      ]
+    },
+    {
+      "text" : "cancel",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"cancel\""
+        }
+      ]
+    },
+    {
+      "text" : "cancel it",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"cancel\""
+        }
+      ]
+    },
+    {
+      "text" : "cancel that",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"cancel\""
+        }
+      ]
+    },
+    {
+      "text" : "cancel the last order",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"cancel\""
+        }
+      ]
+    },
+    {
+      "text" : "checkout"
+    },
+    {
+      "text" : "checkout my split"
+    },
+    {
+      "text" : "checkout split",
+      "entities" : [
+        {
+          "entity" : "checkout",
+          "value" : "\"split\"",
+          "start" : 9,
+          "end" : 14
+        }
+      ]
+    },
+    {
+      "text" : "checkout table",
+      "entities" : [
+        {
+          "entity" : "checkout",
+          "value" : "\" table\"",
+          "start" : 8,
+          "end" : 14
+        }
+      ]
+    },
+    {
+      "text" : "cheesy"
+    },
+    {
+      "text" : "cheque split please",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"split\""
+        }
+      ]
+    },
+    {
+      "text" : "desserts",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"desserts\""
+        }
+      ]
+    },
+    {
+      "text" : "don't order that"
+    },
+    {
+      "text" : "drinks",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"drinks\""
+        }
+      ]
+    },
+    {
+      "text" : "enjoyed the cake",
+      "entities" : [
+        {
+          "entity" : "quantity",
+          "value" : "1",
+          "start" : 12,
+          "end" : 16
+        }
+      ]
+    },
+    {
+      "text" : "give me some starters"
+    },
+    {
+      "text" : "good bye",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"bye\""
+        }
+      ]
+    },
+    {
+      "text" : "great",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"yes\""
+        }
+      ]
+    },
+    {
+      "text" : "how about some starters",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "i don't want it",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"no\""
+        }
+      ]
+    },
+    {
+      "text" : "leaving"
+    },
+    {
+      "text" : "main",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"mains\""
+        }
+      ]
+    },
+    {
+      "text" : "menu for today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"all\""
+        }
+      ]
+    },
+    {
+      "text" : "not in the mood",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"no\""
+        }
+      ]
+    },
+    {
+      "text" : "nvm",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"cancel\""
+        }
+      ]
+    },
+    {
+      "text" : "order two rice",
+      "entities" : [
+        {
+          "entity" : "quantity",
+          "value" : "2",
+          "start" : 6,
+          "end" : 14
+        }
+      ]
+    },
+    {
+      "text" : "order two sambar rice",
+      "entities" : [
+        {
+          "entity" : "quantity",
+          "value" : "2",
+          "start" : 6,
+          "end" : 21
+        }
+      ]
+    },
+    {
+      "text" : "pay",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"pay\""
+        }
+      ]
+    },
+    {
+      "text" : "place my previous order for @theenkrypt",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"previous\"",
+          "start" : 9,
+          "end" : 23
+        },
+        {
+          "entity" : "joinuser",
+          "value" : "\"@theenkrypt\"",
+          "start" : 28,
+          "end" : 39
+        }
+      ]
+    },
+    {
+      "text" : "place the same order for @theenkrypt",
+      "entities" : [
+        {
+          "entity" : "order",
+          "value" : "\"previous\"",
+          "start" : 10,
+          "end" : 20
+        },
+        {
+          "entity" : "joinuser",
+          "value" : "\"@theenkrypt\"",
+          "start" : 25,
+          "end" : 36
+        }
+      ]
+    },
+    {
+      "text" : "see ya",
+      "entities" : [
+        {
+          "entity" : "intent",
+          "value" : "\"bye\""
+        }
+      ]
+    },
+    {
+      "text" : "show me some starters",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "show me the menu",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"all\""
+        }
+      ]
+    },
+    {
+      "text" : "show me the starters for today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "something hot from the menu"
+    },
+    {
+      "text" : "something spicy from the menu"
+    },
+    {
+      "text" : "something sugary from the menu"
+    },
+    {
+      "text" : "something to drink",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"drinks\""
+        }
+      ]
+    },
+    {
+      "text" : "sounds great",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"yes\""
+        }
+      ]
+    },
+    {
+      "text" : "special on the menu for today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"specials\""
+        }
+      ]
+    },
+    {
+      "text" : "specials for today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"specials\""
+        }
+      ]
+    },
+    {
+      "text" : "spicy"
+    },
+    {
+      "text" : "spicy items on the menu today"
+    },
+    {
+      "text" : "split bill",
+      "entities" : [
+        {
+          "entity" : "bill",
+          "value" : "\"split\""
+        }
+      ]
+    },
+    {
+      "text" : "starters",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "sugary"
+    },
+    {
+      "text" : "sweet"
+    },
+    {
+      "text" : "that sounds good"
+    },
+    {
+      "text" : "that sounds great"
+    },
+    {
+      "text" : "what are for starters",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "what are my starters"
+    },
+    {
+      "text" : "what are the specials ",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"specials\""
+        }
+      ]
+    },
+    {
+      "text" : "what are the starters",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "what are the starters?"
+    },
+    {
+      "text" : "what is cheesy on the menu today"
+    },
+    {
+      "text" : "what is for specials for today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"specials\""
+        }
+      ]
+    },
+    {
+      "text" : "what is on the menu",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"all\""
+        }
+      ]
+    },
+    {
+      "text" : "what is on the menu today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"all\""
+        }
+      ]
+    },
+    {
+      "text" : "what is special for today?"
+    },
+    {
+      "text" : "what is special on the menu for today"
+    },
+    {
+      "text" : "what is special on the menu today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"specials\""
+        }
+      ]
+    },
+    {
+      "text" : "what is spicy on the menu today"
+    },
+    {
+      "text" : "what starters do you have on the menu",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"starters\""
+        }
+      ]
+    },
+    {
+      "text" : "what's in the mains today?",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"mains\""
+        }
+      ]
+    },
+    {
+      "text" : "what's on the menu today"
+    },
+    {
+      "text" : "what's special today?"
+    },
+    {
+      "text" : "whats cooking today?"
+    },
+    {
+      "text" : "whats for dessert",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"desserts\""
+        }
+      ]
+    },
+    {
+      "text" : "whats on the mains for today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"mains\""
+        }
+      ]
+    },
+    {
+      "text" : "whats on the menu for drinks",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"drinks\""
+        }
+      ]
+    },
+    {
+      "text" : "whats on the menu today",
+      "entities" : [
+        {
+          "entity" : "menu",
+          "value" : "\"all\""
+        }
+      ]
+    },
+    {
+      "text" : "whats special on the menu today?"
+    },
+    {
+      "text" : "yes",
+      "entities" : [
+        {
+          "entity" : "yes_no",
+          "value" : "\"yes\""
+        }
+      ]
+    }
+  ]
+}

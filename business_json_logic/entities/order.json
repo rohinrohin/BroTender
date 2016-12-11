@@ -1,0 +1,25 @@
+{
+  "data" : {
+    "lookups" : [
+      "trait"
+    ],
+    "name" : "order",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "order",
+    "values" : [
+      {
+        "value" : "cancel"
+      },
+      {
+        "value" : "previous",
+        "expressions" : [
+          "previous order",
+          "same order"
+        ]
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

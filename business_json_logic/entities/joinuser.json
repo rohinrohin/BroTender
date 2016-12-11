@@ -1,0 +1,34 @@
+{
+  "data" : {
+    "lookups" : [
+      "free-text",
+      "keywords"
+    ],
+    "name" : "joinuser",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "joinuser",
+    "values" : [
+      {
+        "value" : "@rohin",
+        "expressions" : [
+          "@rohin"
+        ]
+      },
+      {
+        "value" : "@theenkrypt",
+        "expressions" : [
+          "@theenkrypt"
+        ]
+      },
+      {
+        "value" : "@user",
+        "expressions" : [
+          "@user"
+        ]
+      }
+    ],
+    "doc" : "User-defined entity",
+    "builtin" : false
+  }
+}

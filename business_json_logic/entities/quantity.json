@@ -1,0 +1,13 @@
+{
+  "data" : {
+    "lookups" : [
+      "free-text"
+    ],
+    "name" : "quantity",
+    "lang" : "en",
+    "exotic" : false,
+    "id" : "quantity",
+    "doc" : "{\"spanless\":false,\"short_desc\":\"measure a quantity of something\",\"long_desc\":\"Useful to capture ingredients in recipes for instance, or quantities of food for health tracking apps.\\nReturns a numerical value, a unit, and a product (each field is optional).\\nIf you use this entity, you MUST create two custom entities in your instance:\\n- unit: listing the units (cups, liters, grams...)\\n- product: listing the products (flour, wine, meat...)\\nwit/quantity will load these entities and use them to build quantities.\",\"examples\":[{\"expression\":[\"How many grams in\",\"2 cups of flour\",\"?\"],\"response\":\"\\\"entities\\\" : {\\n      \\\"quantity\\\" : [ {\\n        \\\"product\\\" : \\\"flour\\\",\\n        \\\"value\\\" : 2,\\n        \\\"unit\\\" : \\\"cup\\\"\\n      } ]\\n    }\",\"$$hashKey\":\"0XU\"},{\"expression\":[\"How many cups in\",\"two pounds\",\"?\"],\"response\":\"\\\"entities\\\" : {\\n      \\\"quantity\\\" : [ {\\n        \\\"value\\\" : 2,\\n        \\\"unit\\\" : \\\"pound\\\"\\n      } ]\\n    }\",\"$$hashKey\":\"6PG\"}],\"similar_wisps\":[{\"name\":\"\",\"$$hashKey\":\"0XW\"}]}",
+    "builtin" : true
+  }
+}
