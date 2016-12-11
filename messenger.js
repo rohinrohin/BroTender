@@ -275,9 +275,13 @@ app.post('/webhook', (req, res) => {
         } else {
           console.log('received event', JSON.stringify(event));
           if (event.postback) {
+                console.log("PAYLOAD", event.postback);
             if (event.postback.payload) {
               if (event.postback.payload.startsWith("ORDER_ITEM")) {
                 event.postback.payload = "Order a " + event.postback.payload.split("^")[1];
+              }
+              if (event.postback.payload.startsWith("PAYMENT")) {
+                event.postback.payload = "checkout " + event.postback.payload.split("^")[1];
               }
               wit.runActions(
                 sessionId, // the user's current session
@@ -402,7 +406,7 @@ var mains = {
 
 var starters = {
   name: "Starters",
-  list: ["Spring roll", "Paneer manchurian", "Cheesy fries"],
+  list: ["Spring roll", "Paneer manchurian", "Fries"],
   prices: [50, 150, 150]
 }
 
@@ -444,6 +448,9 @@ var menulist = {
       },
       starters: function() {
         return generateButton(starters);
+      },
+      desserts: function() {
+        return generateButton(desserts);
       }
     };
     if (entities.menu) {
@@ -564,6 +571,7 @@ var menulist = {
       }
     } else if (entities.bill) {
         var items = [];
+        var split = true;
         if (entities.bill[0].value == "split") {
           items = orders.filter(function(obj) {
             if (!obj.paid && obj.id == id) {
@@ -577,6 +585,7 @@ var menulist = {
               return true;
             }
           });
+          split = false;
         }
         if (!items.length) {
           return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
@@ -624,7 +633,27 @@ var menulist = {
         rest.attachment.payload.summary.subtotal = total;
         rest.attachment.payload.summary.total_cost = total;
         console.log(JSON.stringify(rest));
-        return rest;
+        sendGenericMessage(id, rest)
+        
+        setTimeout(function() {sendGenericMessage(id, {
+          attachment: {
+            "type":"template",
+            "payload":{
+              "template_type":"button",
+              "text":"Would you like to pay now?",
+              "buttons":[{
+                type: "postback",
+                title: "Yes",
+                payload: "PAYMENT_^"+(split ? "split" : "table")+"^"
+              },{
+                type: "postback",
+                title: "No",
+                payload: "NONE"
+              }]
+            }
+          }
+        });
+        }, 2000);
       } else if (entities.joinuser) {
       if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
         request({
@@ -674,12 +703,21 @@ var menulist = {
       }
       return {text: "That's cool. I'll let the guys at the kitchen know right away."};
     } else if (entities.checkout) {
-      for (var item in orders) {
-        if (orders[item].id == id) {
-          orders.splice(item, 1);
+      if (entities.checkout[0].value.trim() == "split") {
+        for (var item in orders) {
+          if (orders[item].id == id) {
+            orders.splice(item, 1);
+          }
         }
+        return {text: "All done! Your order history is cleared. You're good to go."};
+      } else if (entities.checkout[0].value.trim() == "table") {
+        for (var item in orders) {
+          if (orders[item].group == group) {
+            orders.splice(item, 1);
+          }
+        }
+        return {text: "All done! You've paid for your entire table. You all are good to go."};
       }
-      return {text: "All done! Your order history is cleared. You're good to go."};
     } else {
       return {text: "Place an order or ask for the bill when you're done. Let me know if you like your food spicy or sweet, and if there's anything you're allergic to. AlphaDawg is happy to serve."};
     }
