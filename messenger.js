@@ -23,6 +23,8 @@ var https = require('https')
 
 
 
+
+
 let Wit = null;
 let log = null;
 try {
@@ -62,6 +64,12 @@ crypto.randomBytes(8, (err, buff) => {
 
 const token = "EAABcuqLqpc4BAFJvG9EzLvF91uQYdS0nHLUOa9sAlKeBsIn052mjpZAo0GQrM62tUbZB4M6OclUFhMqWA44eVtixw2EsyUkBlPVxvZA2vgrROFOxQ2l4v8Xxg4YsAjZAKB3xhlExPJHfabxI9kjvM7iJgLuIIeh5Fxznpk3uNgZDZD"
 
+
+var orders = [];
+var groups = [];
+var modifier = {};
+
+var hisid= "1352659151433814";
 
 function sendGenericMessage(sender, data) {
 	request({
@@ -168,6 +176,7 @@ const wit = new Wit({
 
 // Starting our webserver and putting it all together
 const app = express();
+app.use(express.static('public'))
 app.use(({method, url}, rsp, next) => {
   rsp.on('finish', () => {
     console.log(`${rsp.statusCode} ${method} ${url}`);
@@ -175,6 +184,29 @@ app.use(({method, url}, rsp, next) => {
   next();
 });
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
+
+app.get('/getitems', function(req, res) {
+  console.log("SENT ALLITEMS");
+  res.send({
+    arr: orders,
+    aller_pref: modifier
+  })
+});
+
+app.get('/done', function(req, res) {
+  console.log("MARKED AS DONE");
+  orders[parseInt(req.query.id)].done = true;
+  sendGenericMessage(orders[parseInt(req.query.id)].id, {text: 'Heads up! Your serving(s) of ' + orders[parseInt(req.query.id)].item + ' is on its way.'});
+  sendGenericMessage(orders[parseInt(req.query.id)].id, {
+      "attachment": {
+          "type": "image",
+          "payload": {
+              "url":"http://i.giphy.com/l41lQKzFg8T8p7oas.gif"
+          }
+      }
+  });
+  res.send("DONE");
+})
 
 // Webhook setup
 app.get('/webhook', (req, res) => {
@@ -323,61 +355,80 @@ server.listen('443')
 console.log('Listening on :' + PORT + '...');
 
 var discombobulate = function(id, request, response) {
+  var groupID = -1;
   if (id) {
+    for (var group in groups) {
+      if (groups[group].indexOf(id) != -1) {
+        groupID = group;
+      }
+    }
+    if (groupID == -1) {
+      groups.push([id]);
+      groupID = groups.length-1;
+    }
     var execidentifier = response.text.split("^");
     if (execidentifier[1]) {
       console.log('EXEC', execidentifier);
-      response.text = menulist[execidentifier[1]](id, request.entities);
+      response.text = menulist[execidentifier[1]](groupID, id, request.entities);
       
     } else if (response.quickreplies && response.quickreplies.length){
-      var buttons = {
-        name: "",
-        list: []
+      var data = {
+          text: response.text,
+          quick_replies: []
       }
       for (var option in response.quickreplies) {
-        buttons.list.push(response.quickreplies[option]);
+        data.quick_replies.push({
+          content_type: "text",
+          title: response.quickreplies[option],
+          payload: response.quickreplies[option]
+        });
       }
-      var result = generateButton(buttons);
-      result.attachment.payload.text = response.text;
-      for (var button in result.attachment.payload.buttons) {
-        result.attachment.payload.buttons[button].payload = result.attachment.payload.buttons[button].payload.split("^")[1];
-      }
-      response.text = result;
+      response.text = data;
     }  else {
       response.text = {text: response.text};
     }
     console.log("RESPONSE", JSON.stringify(response));
+    console.log("GROUPS", groups);
+    console.log("ORDERS", orders);
     return response;
   }
 }
 
 var mains = {
   name: "Mains",
-  list: ["Heart attack burger", "Sambar and rice"]
+  list: ["Lamb burger", "Sambar rice"],
+  prices: [300, 150]
 }
 
 var starters = {
   name: "Starters",
-  list: ["Spring roll", "Paneer manchurian", "Cheesy french fries"]
+  list: ["Spring roll", "Paneer manchurian", "Cheesy fries"],
+  prices: [50, 150, 150]
 }
 
 var drinks = {
   name: "Drinks",
-  list: ["Bloody Mary", "Mojito"]
+  list: ["Bloody mary", "Mojito"],
+  prices: [200, 200]
 }
 
-var deserts = {
+var desserts = {
   name: "Deserts",
-  list: ["Dark forest cake", "Vanilla ice cream"]
+  list: ["Dark forest cake", "Vanilla ice cream"],
+  prices: [200, 100]
 }
 
 var specials = {
   name: "Specials",
-  list: ["Chambord Jaigermeisters", "Fish Curry"]
+  list: ["Jaigerbombs", "Fish curry"],
+  prices: [50, 50]
 }
 
+var allitems = [].concat(mains.list).concat(starters.list).concat(drinks.list).concat(desserts.list).concat(specials.list);
+var allprices = [].concat(mains.prices).concat(starters.prices).concat(drinks.prices).concat(desserts.prices).concat(specials.prices);
+
 var menulist = {
-  menu: function(id, entities) {
+  menu: function(group, id, entities) {
     var menutypes = {
       all: function() {
         return menu();
@@ -397,11 +448,243 @@ var menulist = {
     };
     if (entities.menu) {
       return menutypes[entities.menu[0].value]();
+    } else if (entities.quantity) {
+      if (entities.joinuser) {
+        if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
+            var hisgroup = -1;
+            for (var group in groups) {
+              if (groups[group].indexOf(hisid) != -1) {
+                hisgroup = group;
+              }
+            }
+            if (hisgroup == -1) {
+              groups.push([hisid]);
+              hisgroup = groups.length-1;
+            }
+            var copy= {
+              group: hisgroup,
+              id: hisid,
+              quantity: entities.quantity[0].value,
+              item: entities.quantity[0].product.value,
+              price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
+              paid: false,
+              done: false
+            }
+            orders.push(copy);
+            request({
+                url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                json: true
+            }, function (error, response, body) {
+                if (!error && response.statusCode === 200) {
+                    for (var group in groups) {
+                      if (groups[group].indexOf(hisid) != -1) {
+                        groups[group].splice(groups[group].indexOf(hisid), 1);
+                      }
+                    }
+                    groups[group].push(hisid);
+                    var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
+                    sendGenericMessage(hisid, {text: reply})
+                }
+            });
+            return {text: "Done! He should get a message about the order you've placed for him shortly."};
+          }
+      } else {
+        orders.push({
+          group: group,
+          id: id,
+          quantity: entities.quantity[0].value,
+          item: entities.quantity[0].product.value,
+          price:  entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
+          paid: false,
+          done: false
+        });
+        return {text: entities.quantity[0].value + " serving(s) of " + entities.quantity[0].product.value + " coming right up!"};
+      }
+    } else if (entities.order) {
+      if (entities.order[0].value == 'cancel') {
+        var flag = -1;
+        for (var item in orders) {
+          if (orders[item].id == id) {
+            flag = item;
+          }
+        }
+        if (flag == -1) {
+          return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
+        } else {
+          var spliced = orders.splice(flag, 1);
+          return {text: "Fret not! Your last order of " + spliced[0].quantity + " serving(s) of " + spliced[0].item + " has been cancelled."};
+        }
+      } else if (entities.order[0].value == 'previous') {
+        if (entities.joinuser) {
+          if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
+            var flag = -1;
+            for (var item in orders) {
+              if (orders[item].id == id) {
+                flag = item;
+              }
+            }
+            if (flag == -1) {
+              return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
+            } else {
+              var copy = JSON.parse(JSON.stringify(orders[flag]));
+              var hisgroup = -1;
+              for (var group in groups) {
+                if (groups[group].indexOf(hisid) != -1) {
+                  hisgroup = group;
+                }
+              }
+              if (hisgroup == -1) {
+                groups.push([hisid]);
+                hisgroup = groups.length-1;
+              }
+              copy.id = hisid;
+              copy.group = hisgroup;
+              orders.push(copy);
+              request({
+                  url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                  json: true
+              }, function (error, response, body) {
+                  if (!error && response.statusCode === 200) {
+                      for (var group in groups) {
+                        if (groups[group].indexOf(hisid) != -1) {
+                          groups[group].splice(groups[group].indexOf(hisid), 1);
+                        }
+                      }
+                      groups[group].push(hisid);
+                      var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
+                      sendGenericMessage(hisid, {text: reply})
+                  }
+              });
+              return {text: "Done! He should get a message about the order you've placed for him shortly."};
+            }
+          }
+        } else {
+          return {text: "I don't understand :(. Could you perhaps phrase that in a way that is simpler to understand?"}
+        }
+      }
+    } else if (entities.bill) {
+        var items = [];
+        if (entities.bill[0].value == "split") {
+          items = orders.filter(function(obj) {
+            if (!obj.paid && obj.id == id) {
+              return true;
+            }
+          });
+          
+        } else if (entities.bill[0].value == "group") {
+          items = orders.filter(function(obj) {
+            if (!obj.paid && obj.group == group) {
+              return true;
+            }
+          });
+        }
+        if (!items.length) {
+          return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
+        }
+        var rest = {
+          "attachment":{
+            "type":"template",
+            "payload":{
+              "template_type":"receipt",
+              "recipient_name":"Recipient",
+              "order_number":"" + Math.random(),
+              "currency":"INR",
+              "payment_method":"Online",        
+              "order_url":"http://m.me/brobarbot",
+              "elements":[],
+              "address":{
+                "street_1":"A hardcoded",
+                "street_2":"address example",
+                "city":"Bro City",
+                "postal_code":"94025",
+                "state":"KA",
+                "country":"IN"
+              },
+              "summary":{
+                "subtotal":0.0,
+                "shipping_cost":0.0,
+                "total_tax":0.0,
+                "total_cost":0.0
+              }
+            }
+          }
+        }
+        var total = 0;
+        for (var item in items) {
+          rest.attachment.payload.elements.push({
+            image_url: "http://i.imgur.com/GTlVOvE.png",
+            title: items[item].item,
+            quantity: items[item].quantity,
+            price: items[item].price,
+            currency: "INR"
+          });
+          total = total + items[item].price;
+          console.log("TOTAL", total);
+        }
+        rest.attachment.payload.summary.subtotal = total;
+        rest.attachment.payload.summary.total_cost = total;
+        console.log(JSON.stringify(rest));
+        return rest;
+      } else if (entities.joinuser) {
+      if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
+        request({
+            url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+            json: true
+        }, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                for (var group in groups) {
+                  if (groups[group].indexOf(hisid) != -1) {
+                    groups[group].splice(groups[group].indexOf(hisid), 1);
+                  }
+                }
+                groups[group].push(hisid);
+                var reply = body['first_name'] + " " + body['last_name'] + " has added you to a group on Brobar. People in this group can now order for each other and pay/split the bill."
+                sendGenericMessage(hisid, {text: reply})
+
+            }
+        })
+        return {text: "Adding your friend to your group. He should get a message shortly."}
+      } else {
+        return {text: "I could not find that user. This app is in beta and not public, but I like your enthusiasm in trying out random edge cases."}
+      }
+    } else if (entities.allergy) {
+      if (modifier[id]) {
+        if (modifier[id].allergies) {
+          modifier[id].allergies.push(entities.allergy[0].value);
+        } else {
+          modifier[id].allergies = [entities.allergy[0].value]
+        }
+      } else {
+        modifier[id]={
+          allergies: [entities.allergy[0].value]
+        };
+      }
+      return {text: "My sympathies. I'll let the guys at the kitchen know right away."};
+    } else if (entities.preferences) {
+      if (modifier[id]) {
+        if (modifier[id].preferences) {
+          modifier[id].preferences.push(entities.preferences[0].value);
+        } else {
+          modifier[id].preferences = [entities.preferences[0].value]
+        }
+      } else {
+        modifier[id]={
+          preferences: [entities.preferences[0].value]
+        };
+      }
+      return {text: "That's cool. I'll let the guys at the kitchen know right away."};
+    } else if (entities.checkout) {
+      for (var item in orders) {
+        if (orders[item].id == id) {
+          orders.splice(item, 1);
+        }
+      }
+      return {text: "All done! Your order history is cleared. You're good to go."};
     } else {
-      return {text: "Place an order or ask for the bill when you're done. Let me know if you like your food spicy or sweet, and if there's anything you're alergic to. AlphaDawg is happy to serve."};
+      return {text: "Place an order or ask for the bill when you're done. Let me know if you like your food spicy or sweet, and if there's anything you're allergic to. AlphaDawg is happy to serve."};
     }
   },
-  intro: function(id, entities) {
+  intro: function(group, id, entities) {
     request({
         url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
         json: true
@@ -436,7 +719,7 @@ var menulist = {
 }
 
 var menu = function() {
-  return {text: "Whew, you must be really hungry if you want to see our entire menu. We have a variety of selections from our mains, starters, drinks, deserts and specials. Which one would you like to see?"};
+  return {text: "Whew, you must be really hungry if you want to see our entire menu. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"};
 }
 
 var generateButton = function(funcloop) {
