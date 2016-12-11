@@ -11,3 +11,11 @@ Don't ask for the bill anymore.
 Use BroTender to avoid awkward counting and tallying while splitting the bill. Seamlessly pay online and be on your way.
 
 We won't be able to get you your drink, but feel free to get a feel of our bot at https://m.me/brobarbot
+
+
+# BroTender in a nutshell: 
+
+![SLIDE 1](http://i.imgur.com/ETKwHb1.png)
+![SLIDE 2](http://i.imgur.com/YIrppAj.png)
+![SLIDE 3](http://i.imgur.com/mZ4ejfv.png)
+
