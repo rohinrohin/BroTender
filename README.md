@@ -12,6 +12,7 @@ Use BroTender to avoid awkward counting and tallying while splitting the bill. S
 
 We won't be able to get you your drink, but feel free to get a feel of our bot at https://m.me/brobarbot
 
+BroTender was build at [India's first Botathon](http://www.venturesity.com/challenge/id/359) by Haptik, we were placed 2nd in the competition.  
 
 # BroTender in a nutshell: 
 
