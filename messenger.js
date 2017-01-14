@@ -304,14 +304,14 @@ app.post('/webhook', (req, res) => {
                 event.message.quick_reply.payload = "checkout " + event.message.quick_reply.payload.split("^")[1];
               }
               if (event.message.quick_reply.payload.startsWith("HOURSELECT")) {
-                if (!eventObj.times[event.message.quick_reply.payload.split("^")[1]]) {
+                if (!eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]]) {
                   console.log("WHATA", eventObj);
-                  eventObj.times[event.message.quick_reply.payload.split("^")[1]] = 0;
+                  eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] = 0;
                 } else {
-                  eventObj.times[event.message.quick_reply.payload.split("^")[1]] += 1;
+                  eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] += 1;
                 }
                 console.log("WHAT", eventObj);
-                return;
+                return res.sendStatus(200);
               }
               witget().runActions(
                 sessionId, // the user's current session
