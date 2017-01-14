@@ -300,7 +300,109 @@ app.post('/webhook', (req, res) => {
               })
           }
         } else {
-          if (event.message.quick_reply) {
+          if (event.postback) {
+            console.log("PAYLOAD", event.postback);
+            if (event.postback.payload) {
+              if (event.postback.payload.startsWith("ORDER_ITEM")) {
+                if (witflag) {
+                  event.postback.payload = "Order a " + event.postback.payload.split("^")[1];
+                } else {
+                  if (!eventObj.places[event.postback.payload.split("^")[1]]) {
+                    eventObj.places[event.postback.payload.split("^")[1]] = 1;
+                  } else {
+                    eventObj.places[event.postback.payload.split("^")[1]] += 1;
+                  }
+                  var count = 0;
+                  for (var key in eventObj.places) {
+                    count += eventObj.places[key];
+                  }
+                  if (count >= (eventObj.people.length) - 1) {
+                    var actualtimecount = 0;
+                    var actualtimeindex = -1;
+                    for (var key in eventObj.places) {
+                      if (eventObj.places[key] > actualtimecount) {
+                        actualtimecount = eventObj.places[key];
+                        actualtimeindex = key;
+                      }
+                    }
+                    var actualtime = actualtimeindex;
+                    for (var place in places.list) {
+                      if (places.list[place] == actualtime) {
+                        eventObj.where = {
+                          name: places.list[place],
+                          latlong: places.latlong[place]
+                        };
+                        eventObj.places = [];
+                        console.log("DONEDONE");
+                        return;
+                      }
+                    }
+                    eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
+                    eventObj.times = [];
+                    for (var guy in eventObj.people) {
+                      sendGenericMessage(eventObj.people[guy], generateButton(places));
+                    }
+                  }
+                  console.log("WHAT", eventObj);
+                  return;
+                }
+              }
+              if (event.postback.payload.startsWith("PAYMENT")) {
+                event.postback.payload = "checkout " + event.postback.payload.split("^")[1];
+              }
+              if (event.postback.payload.startsWith("HOURSELECT")) {
+                if (!eventObj.times["l"+event.postback.payload.split("^")[1]]) {
+                  eventObj.times["l"+event.postback.payload.split("^")[1]] = 1;
+                } else {
+                  eventObj.times["l"+event.postback.payload.split("^")[1]] += 1;
+                }
+                var count = 0;
+                for (var key in eventObj.times) {
+                  count += eventObj.times[key];
+                }
+                if (count >= (eventObj.people.length) - 1) {
+                  var actualtimecount = 0;
+                  var actualtimeindex = -1;
+                  for (var key in eventObj.times) {
+                    if (eventObj.times[key] > actualtimecount) {
+                      actualtimecount = eventObj.times[key];
+                      actualtimeindex = key;
+                    }
+                  }
+                  var actualtime = actualtimeindex;
+                  eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
+                  eventObj.times = [];
+                  for (var guy in eventObj.people) {
+                    sendGenericMessage(eventObj.people[guy], generateButton(places));
+                  }
+                }
+                console.log("WHAT", eventObj);
+                return;
+              }
+              witget().runActions(
+                sessionId, // the user's current session
+                event.postback.payload, // the user's message
+                sessions[sessionId].context // the user's current session state
+              ).then((context) => {
+                // Our bot did everything it has to do.
+                // Now it's waiting for further messages to proceed.
+                console.log('Waiting for next user messages');
+
+                // Based on the session state, you might want to reset the session.
+                // This depends heavily on the business logic of your bot.
+                // Example:
+                // if (context['done']) {
+                //   delete sessions[sessionId];
+                // }
+
+                // Updating the user's current session state
+                sessions[sessionId].context = context;
+              })
+                .catch((err) => {
+                  console.error('Oops! Got an error from Wit: ', err.stack || err);
+                })
+            }
+          } else if (event.message.quick_reply) {
             console.log("PAYLOAD", event.message.quick_reply);
             if (event.message.quick_reply.payload) {
               if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
