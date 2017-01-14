@@ -307,6 +307,7 @@ app.post('/webhook', (req, res) => {
                 } else {
                   eventObj.times[event.postback.payload.split("^")[1]] += 1;
                 }
+                console.log(eventObj);
                 return;
               }
               witget().runActions(
