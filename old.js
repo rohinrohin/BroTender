@@ -41,7 +41,6 @@ const PORT = 8080;
 
 // Wit.ai parameters
 const WIT_TOKEN = 'VG373HJLW5TJZJXB6JANX5CKEQRRH4YE';
-const WIT_TOKEN2 = 'G2S4KPN5B2FVBRJ7ASWLOMMI2EMM4PBH';
 
 // Messenger API parameters
 const FB_PAGE_TOKEN = 'EAABcuqLqpc4BAMjuZCbSxZBjU734ZAlXt9OzLaMOBLrsXr1AFkgW1kzIceqiLpYNdYLW0VdyQjZCymlXh99vDiBvcRmXM5sOGntvWWjk1Dq73PZBsLFqzJaQgZA8Sv5gxEpZCFaEVb9zVVATw3kvPRldj3TY7OezhZBTGaQqjz54CgZDZD';
@@ -69,7 +68,6 @@ const token = "EAABcuqLqpc4BAFJvG9EzLvF91uQYdS0nHLUOa9sAlKeBsIn052mjpZAo0GQrM62t
 var orders = [];
 var groups = [];
 var modifier = {};
-var witflag = false;
 
 var hisid= "1352659151433814";
 
@@ -175,15 +173,6 @@ const wit = new Wit({
   actions,
   logger: new log.Logger(log.INFO)
 });
-const wit2 = new Wit({
-  accessToken: WIT_TOKEN2,
-  actions,
-  logger: new log.Logger(log.INFO)
-});
-
-var witget = function() {
-  return (witflag ? wit : wit2);
-}
 
 // Starting our webserver and putting it all together
 const app = express();
@@ -260,7 +249,7 @@ app.post('/webhook', (req, res) => {
 
             // Let's forward the message to the Wit.ai Bot Engine
             // This will run all actions until our bot has nothing left to do
-            witget().runActions(
+            wit.runActions(
               sessionId, // the user's current session
               text, // the user's message
               sessions[sessionId].context // the user's current session state
@@ -294,7 +283,7 @@ app.post('/webhook', (req, res) => {
               if (event.postback.payload.startsWith("PAYMENT")) {
                 event.postback.payload = "checkout " + event.postback.payload.split("^")[1];
               }
-              witget().runActions(
+              wit.runActions(
                 sessionId, // the user's current session
                 event.postback.payload, // the user's message
                 sessions[sessionId].context // the user's current session state
