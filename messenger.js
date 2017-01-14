@@ -346,8 +346,8 @@ app.post('/webhook', (req, res) => {
                         var origintext = origins.join("|");
                         var desttext = origintext+"|"+eventObj.where.latlong.join(",");
                         console.log("AYYYYYY", "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE");
-                        request("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE", function(data, status) {
-                          console.log(data, status);
+                        request("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE", function(err, response, body) {
+                          console.log(response, body);
                         });
                         return;
                       }
