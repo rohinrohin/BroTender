@@ -304,11 +304,24 @@ app.post('/webhook', (req, res) => {
                 event.message.quick_reply.payload = "checkout " + event.message.quick_reply.payload.split("^")[1];
               }
               if (event.message.quick_reply.payload.startsWith("HOURSELECT")) {
-                if (eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] == undefined) {
-                  console.log("WHATA", eventObj);
-                  eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] = 0;
+                if (!eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]]) {
+                  eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] = 1;
                 } else {
                   eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] += 1;
+                }
+                var count = 0;
+                for (var key in eventObj.times) {
+                  count += eventObj.times[key];
+                }
+                if (count >= eventObj.people.length) {
+                  var actualtimeindex = 0;
+                  for (var key in eventObj.times) {
+                    if (eventObj.times[key] > actualtimeindex) {
+                      actualtimeindex = key;
+                    }
+                  }
+                  var actualtime = eventObj.times[actualtimeindex];
+                  eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                 }
                 console.log("WHAT", eventObj);
                 return;
