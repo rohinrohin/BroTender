@@ -262,7 +262,6 @@ app.post('/webhook', (req, res) => {
 
             // Let's forward the message to the Wit.ai Bot Engine
             // This will run all actions until our bot has nothing left to do
-            console.log("HERE", witget())
             witget().runActions(
               sessionId, // the user's current session
               text, // the user's message
@@ -366,25 +365,29 @@ console.log('Listening on :' + PORT + '...');
 
 
 var disco = function(tities) {
-  if (tities.greeting) {
-    request({
-        url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-        json: true
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            var reply = "Hey " + body['first_name'] + ", I'm Pupper, your concierge for today. Tell me if you want to plan something with your friends or family."
-            sendGenericMessage(id, {text: reply})
+  if (tities.intent) {
+    if (tities.intent.value == "greeting") {
+      request({
+          url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+          json: true
+      }, function (error, response, body) {
+          if (!error && response.statusCode === 200) {
+              var reply = "Hey " + body['first_name'] + ", I'm Pupper, your concierge for today. Tell me if you want to plan something with your friends or family."
+              sendGenericMessage(id, {text: reply})
 
-        }
-    })
-    return {
-        "attachment": {
-            "type": "image",
-            "payload": {
-                "url":"http://i.giphy.com/644IL1MPwN7KE.gif"
-            }
-        }
-    };
+          }
+      })
+      return {
+          "attachment": {
+              "type": "image",
+              "payload": {
+                  "url":"http://i.giphy.com/644IL1MPwN7KE.gif"
+              }
+          }
+      };
+    } else {
+      return {text: "IDK."};
+    }
   } else {
     return {text: "IDK."};
   }
