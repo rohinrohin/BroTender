@@ -82,6 +82,10 @@ var places = {
   latlong: [[12.969086, 77.648610], [12.970477, 77.645370], [12.971763,	77.654693]],
   prices: [0, 0]
 }
+var locations = {};
+locations[enkryptid] = [12.959600, 77.643781];
+locations[cpk] = [12.971209, 77.619497];
+locations[baller] = [12.959600, 77.643781];
 
 var eventObj = {};
 
@@ -269,8 +273,10 @@ app.post('/webhook', (req, res) => {
           if (attachments) {
             // We received an attachment
             // Let's reply with an automatic message
-            fbMessage(sender, 'Sorry I can only process text messages for now.')
-              .catch(console.error);
+            if (attachments[0].type == "location") {
+              locations[sender] = [parseFloat(attachments[0].payload.coordinates.lat), parseFloat(attachments[0].payload.coordinates.long)];
+              sendGenericMessage(sender, {text: "Location saved. You can expect better suggestions when we're taking you places"});
+            }
           } else if (text) {
             // We received a text message
 
@@ -333,7 +339,16 @@ app.post('/webhook', (req, res) => {
                           latlong: places.latlong[place]
                         };
                         eventObj.places = [];
-                        console.log("DONEDONE");
+                        var origins = [];
+                        for (var x in locations) {
+                          origins.push(locations[x].join(","));
+                        }
+                        var origintext = origins.join("|");
+                        var desttest = origintext+"|"+eventObj.where.latlong.join(",");
+                        console.log("AYYYYYY", "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE");
+                        request("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE", function(data, status) {
+                          console.log(data, status);
+                        });
                         return;
                       }
                     }
@@ -594,7 +609,7 @@ var disco = function (id, tities) {
       times: [],
       places: [],
     }
-
+    eventObj.times["l"+eventObj.time.getHours()] = 1;
     request({
       url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
       json: true
@@ -1001,6 +1016,8 @@ var menulist = {
             orders.splice(item, 1);
           }
         }
+        var eventObj = {};
+        var witflag = true;
         return { text: "All done! Your order history is cleared. You're good to go." };
       } else if (entities.checkout[0].value.trim() == "table") {
         for (var item in orders) {
