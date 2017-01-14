@@ -301,6 +301,14 @@ app.post('/webhook', (req, res) => {
               if (event.postback.payload.startsWith("PAYMENT")) {
                 event.postback.payload = "checkout " + event.postback.payload.split("^")[1];
               }
+              if (event.postback.payload.startsWith("HOURSELECT")) {
+                if (!eventObj.times[event.postback.payload.split("^")[1]]) {
+                  eventObj.times[event.postback.payload.split("^")[1]] = 0;
+                } else {
+                  eventObj.times[event.postback.payload.split("^")[1]] += 1;
+                }
+                return;
+              }
               witget().runActions(
                 sessionId, // the user's current session
                 event.postback.payload, // the user's message
@@ -410,7 +418,8 @@ var disco = function (id, tities) {
       event: tities.organize[0].value,
       time: temptime,
       people: party,
-      where: []
+      where: [],
+      times: []
     }
 
     request({
@@ -429,6 +438,8 @@ var disco = function (id, tities) {
               prevHour -= 1;
             }
             if ((nextHour + 1) > 23) {
+              nextHour = 0;
+            } else {
               nextHour += 1;
             }
             sendGenericMessage(eventObj.people[guy], {
