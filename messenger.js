@@ -395,9 +395,9 @@ var disco = function (id, tities) {
     }
   } else if (tities.organize && tities.organize.length) {
     var temptime = undefined;
-    if (tities.datetime && tities.datetime.length) {
-      temptime = new Date(tities.datetime.value);
-      console.log("LMAO", temptime, tities.datetime.value)
+    if (tities.datetime && tities.datetime[0].length) {
+      temptime = new Date(tities.datetime[0].value);
+      console.log("LMAO", temptime, tities.datetime[0].value)
     }
     if (!temptime) {
       if (tities.organize[0].value == "lunch") {
