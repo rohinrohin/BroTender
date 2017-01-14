@@ -70,7 +70,7 @@ const token = "EAABcuqLqpc4BAFJvG9EzLvF91uQYdS0nHLUOa9sAlKeBsIn052mjpZAo0GQrM62t
 var orders = [];
 var groups = [];
 var modifier = {};
-var witflag = false;
+var witflag = true;
 
 var hisid= "1352659151433814";
 
@@ -363,6 +363,10 @@ app.listen(PORT);
 
 console.log('Listening on :' + PORT + '...');
 
+
+var disco = function(tities) {
+  return "Lmao";
+}
 var discombobulate = function(id, request, response) {
   var groupID = -1;
   if (id) {
@@ -378,7 +382,11 @@ var discombobulate = function(id, request, response) {
     var execidentifier = response.text.split("^");
     if (execidentifier[1]) {
       console.log('EXEC', execidentifier);
-      response.text = menulist[execidentifier[1]](groupID, id, request.entities);
+      if (witflag) {
+        response.text = disco(request.entities);
+      } else {
+        response.text = menulist[execidentifier[1]](groupID, id, request.entities);
+      }
 
     } else if (response.quickreplies && response.quickreplies.length){
       var data = {
