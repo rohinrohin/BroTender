@@ -323,9 +323,9 @@ app.post('/webhook', (req, res) => {
                     }
                   }
                   var actualtime = actualtimeindex;
-                  console.log("ACT", actualtime);
                   eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                 }
+                eventObj.times = [];
                 console.log("WHAT", eventObj);
                 return;
               }
@@ -423,7 +423,7 @@ var disco = function (id, tities) {
     }
   } else if (tities.organize && tities.organize.length) {
     var temptime = undefined;
-    if (tities.datetime && tities.datetime[0].length) {
+    if (tities.datetime && tities.datetime.length) {
       temptime = new Date(tities.datetime[0].value);
       console.log("LMAO", temptime, tities.datetime[0].value)
     }
