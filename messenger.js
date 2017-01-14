@@ -305,6 +305,7 @@ app.post('/webhook', (req, res) => {
               }
               if (event.message.quick_reply.payload.startsWith("HOURSELECT")) {
                 if (!eventObj.times[event.message.quick_reply.payload.split("^")[1]]) {
+                  console.log("WHATA", eventObj);
                   eventObj.times[event.message.quick_reply.payload.split("^")[1]] = 0;
                 } else {
                   eventObj.times[event.message.quick_reply.payload.split("^")[1]] += 1;
