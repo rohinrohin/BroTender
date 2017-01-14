@@ -11,6 +11,8 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
+    "node-fetch": "^1.6.3",
+    "node-wit": "^4.2.0",
     "request": "^2.71.0"
   }
 }
