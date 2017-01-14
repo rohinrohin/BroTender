@@ -370,7 +370,7 @@ console.log('Listening on :' + PORT + '...');
 
 
 var disco = function(id, tities) {
-  if (tities.intent) {
+  if (tities.intent && tities.intent.length) {
     if (tities.intent[0].value == "greeting") {
       request({
           url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
@@ -390,20 +390,20 @@ var disco = function(id, tities) {
               }
           }
       };
-    } else if (tities.organize) {
+    } else if (tities.organize && tities.organize.length) {
       var temptime = undefined;
-      if (tities.time) {
-        temptime = new Date(tities.time.value);
+      if (tities.datetime && tities.datetime.length) {
+        temptime = new Date(tities.datetime.value);
       }
       if (!temptime) {
-        if (tities.organize.value == "lunch") {
+        if (tities.organize[0].value == "lunch") {
           temptime = new Date((new Date()).setHours(13, 0))
-        } else if (tities.organize.value == "dinner") {
+        } else if (tities.organize[0].value == "dinner") {
           temptime = new Date((new Date()).setHours(22, 0))
         }
       }
       eventObj = {
-        event: tities.organize.value,
+        event: tities.organize[0].value,
         time: temptime,
         people: party,
         where: []
@@ -450,7 +450,7 @@ var disco = function(id, tities) {
           }
       });
 
-      return "Cool, I'll check with others and let you know about your " + tities.organize.value + " plans";
+      return "Cool, I'll check with others and let you know about your " + tities.organize[0].value + " plans";
     } else {
       return {text: "IDK."};
     }
