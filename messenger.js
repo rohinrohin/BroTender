@@ -16,6 +16,7 @@
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const express = require('express');
+
 const fetch = require('node-fetch');
 const request = require('request');
 var fs = require('fs')
@@ -182,6 +183,7 @@ const wit2 = new Wit({
 });
 
 var witget = function() {
+  console.log(witflag ? WIT_TOKEN : WIT_TOKEN2);
   return (witflag ? wit : wit2);
 }
 
