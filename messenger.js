@@ -310,6 +310,7 @@ app.post('/webhook', (req, res) => {
                   eventObj.times[event.message.quick_reply.payload.split("^")[1]] += 1;
                 }
                 console.log("WHAT", eventObj);
+                return;
               }
               witget().runActions(
                 sessionId, // the user's current session
