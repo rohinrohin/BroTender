@@ -429,7 +429,7 @@ var disco = function (id, tities) {
             if ((nextHour + 1) > 23) {
               nextHour = 0;
             }
-            sendGenericMessage(guy, {
+            sendGenericMessage(eventObj.people[guy], {
               text: reply,
               "quick_replies": [
                 {
