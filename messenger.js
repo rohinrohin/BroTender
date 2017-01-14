@@ -365,7 +365,28 @@ console.log('Listening on :' + PORT + '...');
 
 
 var disco = function(tities) {
-  return "Lmao";
+  if (tities.greeting) {
+    request({
+        url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+        json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            var reply = "Hey " + body['first_name'] + ", I'm Pupper, your concierge for today. Tell me if you want to plan something with your friends or family."
+            sendGenericMessage(id, {text: reply})
+
+        }
+    })
+    return {
+        "attachment": {
+            "type": "image",
+            "payload": {
+                "url":"http://i.giphy.com/644IL1MPwN7KE.gif"
+            }
+        }
+    };
+  } else {
+    return "IDK. "
+  }
 }
 var discombobulate = function(id, request, response) {
   var groupID = -1;
