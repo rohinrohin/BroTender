@@ -304,7 +304,7 @@ app.post('/webhook', (req, res) => {
                 event.message.quick_reply.payload = "checkout " + event.message.quick_reply.payload.split("^")[1];
               }
               if (event.message.quick_reply.payload.startsWith("HOURSELECT")) {
-                if (!eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]]) {
+                if (eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] == undefined) {
                   console.log("WHATA", eventObj);
                   eventObj.times["l"+event.message.quick_reply.payload.split("^")[1]] = 0;
                 } else {
