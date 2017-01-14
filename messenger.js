@@ -262,6 +262,7 @@ app.post('/webhook', (req, res) => {
 
             // Let's forward the message to the Wit.ai Bot Engine
             // This will run all actions until our bot has nothing left to do
+            console.log("HERE", witget())
             witget().runActions(
               sessionId, // the user's current session
               text, // the user's message
@@ -389,7 +390,6 @@ var disco = function(tities) {
   }
 }
 var discombobulate = function(id, request, response) {
-  console.log('HERE')
   var groupID = -1;
   if (id) {
     for (var group in groups) {
@@ -405,9 +405,7 @@ var discombobulate = function(id, request, response) {
     if (execidentifier[1]) {
       console.log('EXEC', execidentifier);
       if (witflag) {
-        console.log("test");
         response.text = disco(request.entities);
-        console.log("terewrewst");
       } else {
         response.text = menulist[execidentifier[1]](groupID, id, request.entities);
       }
