@@ -76,6 +76,12 @@ var enkryptid = "1352659151433814";
 var baller = "1244986138929148";
 var cpk = "1358977324172821";
 var party = [enkryptid, baller, cpk];
+var places = {
+  name: "Pick A Restaurant",
+  list: ["Leon Grill", "Monkey Bar", "New Plantain Leaf"],
+  latlong: [[12.969086, 77.648610], [12.970477, 77.645370], [12.971763,	77.654693]],
+  prices: [0, 0]
+}
 
 var eventObj = {};
 
@@ -298,7 +304,48 @@ app.post('/webhook', (req, res) => {
             console.log("PAYLOAD", event.message.quick_reply);
             if (event.message.quick_reply.payload) {
               if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
-                event.message.quick_reply.payload = "Order a " + event.message.quick_reply.payload.split("^")[1];
+                if (witflag) {
+                  event.message.quick_reply.payload = "Order a " + event.message.quick_reply.payload.split("^")[1];
+                } else {
+                  if (!eventObj.places[event.message.quick_reply.payload.split("^")[1]]) {
+                    eventObj.places[event.message.quick_reply.payload.split("^")[1]] = 1;
+                  } else {
+                    eventObj.places[event.message.quick_reply.payload.split("^")[1]] += 1;
+                  }
+                  var count = 0;
+                  for (var key in eventObj.places) {
+                    count += eventObj.places[key];
+                  }
+                  if (count >= (eventObj.people.length) - 1) {
+                    var actualtimecount = 0;
+                    var actualtimeindex = -1;
+                    for (var key in eventObj.places) {
+                      if (eventObj.places[key] > actualtimecount) {
+                        actualtimecount = eventObj.places[key];
+                        actualtimeindex = key;
+                      }
+                    }
+                    var actualtime = actualtimeindex;
+                    for (var place in places.list) {
+                      if (places.list[place] == actualtime) {
+                        eventObj.where = {
+                          name: places.list[place],
+                          latlong: places.latlong[place]
+                        };
+                        eventObj.places = [];
+                        console.log("DONEDONE");
+                        return;
+                      }
+                    }
+                    eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
+                    eventObj.times = [];
+                    for (var guy in eventObj.people) {
+                      sendGenericMessage(eventObj.people[guy], generateButton(places));
+                    }
+                  }
+                  console.log("WHAT", eventObj);
+                  return;
+                }
               }
               if (event.message.quick_reply.payload.startsWith("PAYMENT")) {
                 event.message.quick_reply.payload = "checkout " + event.message.quick_reply.payload.split("^")[1];
@@ -325,6 +372,9 @@ app.post('/webhook', (req, res) => {
                   var actualtime = actualtimeindex;
                   eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                   eventObj.times = [];
+                  for (var guy in eventObj.people) {
+                    sendGenericMessage(eventObj.people[guy], generateButton(places));
+                  }
                 }
                 console.log("WHAT", eventObj);
                 return;
@@ -439,7 +489,8 @@ var disco = function (id, tities) {
       time: temptime,
       people: party,
       where: [],
-      times: []
+      times: [],
+      places: [],
     }
 
     request({
