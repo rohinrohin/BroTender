@@ -251,7 +251,7 @@ app.post('/webhook', (req, res) => {
         const sender = event.sender.id;
         const sessionId = findOrCreateSession(sender);
         console.log('received event', JSON.stringify(event));
-        if (event.message && !event.message.is_echo) {
+        if (event.message && !event.message.is_echo && !event.message.quick_reply) {
 
           // We retrieve the user's current session, or create one if it doesn't exist
           // This is needed for our bot to figure out the conversation history
@@ -294,26 +294,26 @@ app.post('/webhook', (req, res) => {
               })
           }
         } else {
-          if (event.postback) {
-            console.log("PAYLOAD", event.postback);
-            if (event.postback.payload) {
-              if (event.postback.payload.startsWith("ORDER_ITEM")) {
-                event.postback.payload = "Order a " + event.postback.payload.split("^")[1];
+          if (event.message.quick_reply) {
+            console.log("PAYLOAD", event.message.quick_reply);
+            if (event.message.quick_reply.payload) {
+              if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
+                event.message.quick_reply.payload = "Order a " + event.message.quick_reply.payload.split("^")[1];
               }
-              if (event.postback.payload.startsWith("PAYMENT")) {
-                event.postback.payload = "checkout " + event.postback.payload.split("^")[1];
+              if (event.message.quick_reply.payload.startsWith("PAYMENT")) {
+                event.message.quick_reply.payload = "checkout " + event.message.quick_reply.payload.split("^")[1];
               }
-              if (event.postback.payload.startsWith("HOURSELECT")) {
-                if (!eventObj.times[event.postback.payload.split("^")[1]]) {
-                  eventObj.times[event.postback.payload.split("^")[1]] = 0;
+              if (event.message.quick_reply.payload.startsWith("HOURSELECT")) {
+                if (!eventObj.times[event.message.quick_reply.payload.split("^")[1]]) {
+                  eventObj.times[event.message.quick_reply.payload.split("^")[1]] = 0;
                 } else {
-                  eventObj.times[event.postback.payload.split("^")[1]] += 1;
+                  eventObj.times[event.message.quick_reply.payload.split("^")[1]] += 1;
                 }
                 console.log("WHAT", eventObj);
               }
               witget().runActions(
                 sessionId, // the user's current session
-                event.postback.payload, // the user's message
+                event.message.quick_reply.payload, // the user's message
                 sessions[sessionId].context // the user's current session state
               ).then((context) => {
                 // Our bot did everything it has to do.
