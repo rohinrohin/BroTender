@@ -420,9 +420,9 @@ var disco = function (id, tities) {
       if (!error && response.statusCode === 200) {
         for (var guy in eventObj.people) {
           if (id != eventObj.people[guy]) {
-            var reply = body['first_name'] + " " + body['last_name'] + " has made plans for " + eventObj.event + " at " + eventObj.temptime.getHours() + ":00. Click Ok, or select a different time";
-            var prevHour = eventObj.temptime.getHours();
-            var nextHour = eventObj.temptime.getHours();
+            var reply = body['first_name'] + " " + body['last_name'] + " has made plans for " + eventObj.event + " at " + eventObj.time.getHours() + ":00. Click Ok, or select a different time";
+            var prevHour = eventObj.time.getHours();
+            var nextHour = eventObj.time.getHours();
             if ((prevHour - 1) < 0) {
               prevHour = 23;
             }
@@ -440,7 +440,7 @@ var disco = function (id, tities) {
                 {
                   "content_type": "text",
                   "title": "" + "OK",
-                  "payload": "HOURSELECT^" + eventObj.temptime.getHours() + "^"
+                  "payload": "HOURSELECT^" + eventObj.time.getHours() + "^"
                 },
                 {
                   "content_type": "text",
