@@ -72,7 +72,12 @@ var groups = [];
 var modifier = {};
 var witflag = true;
 
-var hisid= "1352659151433814";
+var enkryptid = "1352659151433814";
+var baller = "1244986138929148";
+var cpk = "1358977324172821";
+var party = [enkryptid, baller, cpk];
+
+var eventObj = {};
 
 function sendGenericMessage(sender, data) {
 	request({
@@ -385,6 +390,67 @@ var disco = function(id, tities) {
               }
           }
       };
+    } else if (tities.organize) {
+      var temptime = undefined;
+      if (tities.time) {
+        temptime = new Date(tities.time.value);
+      }
+      if (!temptime) {
+        if (tities.organize.value == "lunch") {
+          temptime = new Date((new Date()).setHours(13, 0))
+        } else if (tities.organize.value == "dinner") {
+          temptime = new Date((new Date()).setHours(22, 0))
+        }
+      }
+      eventObj = {
+        event: tities.organize.value,
+        time: temptime,
+        people: party,
+        where: []
+      }
+
+      request({
+          url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+          json: true
+      }, function (error, response, body) {
+          if (!error && response.statusCode === 200) {
+            for (var guy in eventObj.people) {
+              if (id != eventObj.people[guy]) {
+                var reply = body['first_name'] + " " + body['last_name'] + " has made plans for " + eventObj.event + " at " + eventObj.temptime.getHours() + ":00. Click Ok, or select a different time";
+                var prevHour = eventObj.temptime.getHours();
+                var nextHour = eventObj.temptime.getHours();
+                if ((prevHour - 1) < 0) {
+                  prevHour = 23;
+                }
+                if ((nextHour + 1) > 23) {
+                  nextHour = 0;
+                }
+                sendGenericMessage(guy, {
+                  text: reply,
+                  "quick_replies":[
+                    {
+                      "content_type":"text",
+                      "title":"" + prevHour,
+                      "payload":"HOURSELECT^"+prevHour+"^"
+                    },
+                    {
+                      "content_type":"text",
+                      "title":"" + "OK",
+                      "payload":"HOURSELECT^"+eventObj.temptime.getHours()+"^"
+                    },
+                    {
+                      "content_type":"text",
+                      "title":"" + nextHour,
+                      "payload":"HOURSELECT^"+nextHour+"^"
+                    }
+                  ]
+                })
+              }
+            }
+          }
+      });
+
+      return "Cool, I'll check with others and let you know about your " + tities.organize.value + " plans";
     } else {
       return {text: "IDK."};
     }
@@ -430,6 +496,7 @@ var discombobulate = function(id, request, response) {
       response.text = {text: response.text};
     }
     console.log("RESPONSE", JSON.stringify(response));
+    console.log("EVENT", eventObj);
     console.log("GROUPS", groups);
     console.log("ORDERS", orders);
     return response;
@@ -498,17 +565,17 @@ var menulist = {
         if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
             var hisgroup = -1;
             for (var group in groups) {
-              if (groups[group].indexOf(hisid) != -1) {
+              if (groups[group].indexOf(enkryptid) != -1) {
                 hisgroup = group;
               }
             }
             if (hisgroup == -1) {
-              groups.push([hisid]);
+              groups.push([enkryptid]);
               hisgroup = groups.length-1;
             }
             var copy= {
               group: hisgroup,
-              id: hisid,
+              id: enkryptid,
               quantity: entities.quantity[0].value,
               item: entities.quantity[0].product.value,
               price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
@@ -522,13 +589,13 @@ var menulist = {
             }, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
                     for (var group in groups) {
-                      if (groups[group].indexOf(hisid) != -1) {
-                        groups[group].splice(groups[group].indexOf(hisid), 1);
+                      if (groups[group].indexOf(enkryptid) != -1) {
+                        groups[group].splice(groups[group].indexOf(enkryptid), 1);
                       }
                     }
-                    groups[group].push(hisid);
+                    groups[group].push(enkryptid);
                     var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
-                    sendGenericMessage(hisid, {text: reply})
+                    sendGenericMessage(enkryptid, {text: reply})
                 }
             });
             return {text: "Done! He should get a message about the order you've placed for him shortly."};
@@ -574,15 +641,15 @@ var menulist = {
               var copy = JSON.parse(JSON.stringify(orders[flag]));
               var hisgroup = -1;
               for (var group in groups) {
-                if (groups[group].indexOf(hisid) != -1) {
+                if (groups[group].indexOf(enkryptid) != -1) {
                   hisgroup = group;
                 }
               }
               if (hisgroup == -1) {
-                groups.push([hisid]);
+                groups.push([enkryptid]);
                 hisgroup = groups.length-1;
               }
-              copy.id = hisid;
+              copy.id = enkryptid;
               copy.group = hisgroup;
               orders.push(copy);
               request({
@@ -591,13 +658,13 @@ var menulist = {
               }, function (error, response, body) {
                   if (!error && response.statusCode === 200) {
                       for (var group in groups) {
-                        if (groups[group].indexOf(hisid) != -1) {
-                          groups[group].splice(groups[group].indexOf(hisid), 1);
+                        if (groups[group].indexOf(enkryptid) != -1) {
+                          groups[group].splice(groups[group].indexOf(enkryptid), 1);
                         }
                       }
-                      groups[group].push(hisid);
+                      groups[group].push(enkryptid);
                       var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
-                      sendGenericMessage(hisid, {text: reply})
+                      sendGenericMessage(enkryptid, {text: reply})
                   }
               });
               return {text: "Done! He should get a message about the order you've placed for him shortly."};
@@ -700,13 +767,13 @@ var menulist = {
         }, function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 for (var group in groups) {
-                  if (groups[group].indexOf(hisid) != -1) {
-                    groups[group].splice(groups[group].indexOf(hisid), 1);
+                  if (groups[group].indexOf(enkryptid) != -1) {
+                    groups[group].splice(groups[group].indexOf(enkryptid), 1);
                   }
                 }
-                groups[group].push(hisid);
+                groups[group].push(enkryptid);
                 var reply = body['first_name'] + " " + body['last_name'] + " has added you to a group on Brobar. People in this group can now order for each other and pay/split the bill."
-                sendGenericMessage(hisid, {text: reply})
+                sendGenericMessage(enkryptid, {text: reply})
 
             }
         })
