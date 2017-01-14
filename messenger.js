@@ -80,21 +80,21 @@ var party = [enkryptid, baller, cpk];
 var eventObj = {};
 
 function sendGenericMessage(sender, data) {
-	request({
-		url: 'https://graph.facebook.com/v2.6/me/messages',
-		qs: {access_token:token},
-		method: 'POST',
-		json: {
-			recipient: {id:sender},
-			message: data,
-		}
-	}, function(error, response, body) {
-		if (error) {
-			console.log('Error sending messages: ', error)
-		} else if (response.body.error) {
-			console.log('Error: ', response.body.error)
-		}
-	})
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: token },
+    method: 'POST',
+    json: {
+      recipient: { id: sender },
+      message: data,
+    }
+  }, function (error, response, body) {
+    if (error) {
+      console.log('Error sending messages: ', error)
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error)
+    }
+  })
 }
 
 const fbMessage = (id, text) => {
@@ -105,16 +105,16 @@ const fbMessage = (id, text) => {
   const qs = 'access_token=' + encodeURIComponent(FB_PAGE_TOKEN);
   return fetch('https://graph.facebook.com/me/messages?' + qs, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body,
   })
-  .then(rsp => rsp.json())
-  .then(json => {
-    if (json.error && json.error.message) {
-      throw new Error(json.error.message);
-    }
-    return json;
-  });
+    .then(rsp => rsp.json())
+    .then(json => {
+      if (json.error && json.error.message) {
+        throw new Error(json.error.message);
+      }
+      return json;
+    });
 };
 
 // ----------------------------------------------------------------------------
@@ -137,7 +137,7 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}};
+    sessions[sessionId] = { fbid: fbid, context: {} };
   }
   return sessionId;
 };
@@ -156,15 +156,15 @@ const actions = {
       // We return a promise to let our bot know when we're done sending
 
       return sendGenericMessage(recipientId, response.text)
-//      .then(() => null)
-//      .catch((err) => {
-//        console.error(
-//          'Oops! An error occurred while forwarding the response to',
-//          recipientId,
-//          ':',
-//          err.stack || err
-//        );
-//      });
+      //      .then(() => null)
+      //      .catch((err) => {
+      //        console.error(
+      //          'Oops! An error occurred while forwarding the response to',
+      //          recipientId,
+      //          ':',
+      //          err.stack || err
+      //        );
+      //      });
     } else {
       console.error('Oops! Couldn\'t find user for session:', request.sessionId);
       // Giving the wheel back to our bot
@@ -187,7 +187,7 @@ const wit2 = new Wit({
   logger: new log.Logger(log.INFO)
 });
 
-var witget = function() {
+var witget = function () {
   console.log(witflag ? WIT_TOKEN : WIT_TOKEN2);
   return (witflag ? wit : wit2);
 }
@@ -203,7 +203,7 @@ app.use(({method, url}, rsp, next) => {
 });
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 
-app.get('/getitems', function(req, res) {
+app.get('/getitems', function (req, res) {
   console.log("SENT ALLITEMS");
   res.send({
     arr: orders,
@@ -211,17 +211,17 @@ app.get('/getitems', function(req, res) {
   })
 });
 
-app.get('/done', function(req, res) {
+app.get('/done', function (req, res) {
   console.log("MARKED AS DONE");
   orders[parseInt(req.query.id)].done = true;
-  sendGenericMessage(orders[parseInt(req.query.id)].id, {text: 'Heads up! Your serving(s) of ' + orders[parseInt(req.query.id)].item + ' is on its way.'});
+  sendGenericMessage(orders[parseInt(req.query.id)].id, { text: 'Heads up! Your serving(s) of ' + orders[parseInt(req.query.id)].item + ' is on its way.' });
   sendGenericMessage(orders[parseInt(req.query.id)].id, {
-      "attachment": {
-          "type": "image",
-          "payload": {
-              "url":"http://i.giphy.com/l41lQKzFg8T8p7oas.gif"
-          }
+    "attachment": {
+      "type": "image",
+      "payload": {
+        "url": "http://i.giphy.com/l41lQKzFg8T8p7oas.gif"
       }
+    }
   });
   res.send("DONE");
 })
@@ -261,7 +261,7 @@ app.post('/webhook', (req, res) => {
             // We received an attachment
             // Let's reply with an automatic message
             fbMessage(sender, 'Sorry I can only process text messages for now.')
-            .catch(console.error);
+              .catch(console.error);
           } else if (text) {
             // We received a text message
 
@@ -286,14 +286,14 @@ app.post('/webhook', (req, res) => {
               // Updating the user's current session state
               sessions[sessionId].context = context;
             })
-            .catch((err) => {
-              console.error('Oops! Got an error from Wit: ', err.stack || err);
-            })
+              .catch((err) => {
+                console.error('Oops! Got an error from Wit: ', err.stack || err);
+              })
           }
         } else {
           console.log('received event', JSON.stringify(event));
           if (event.postback) {
-                console.log("PAYLOAD", event.postback);
+            console.log("PAYLOAD", event.postback);
             if (event.postback.payload) {
               if (event.postback.payload.startsWith("ORDER_ITEM")) {
                 event.postback.payload = "Order a " + event.postback.payload.split("^")[1];
@@ -320,9 +320,9 @@ app.post('/webhook', (req, res) => {
                 // Updating the user's current session state
                 sessions[sessionId].context = context;
               })
-              .catch((err) => {
-                console.error('Oops! Got an error from Wit: ', err.stack || err);
-              })
+                .catch((err) => {
+                  console.error('Oops! Got an error from Wit: ', err.stack || err);
+                })
             }
           }
         }
@@ -353,8 +353,8 @@ function verifyRequestSignature(req, res, buf) {
     var signatureHash = elements[1];
 
     var expectedHash = crypto.createHmac('sha1', FB_APP_SECRET)
-                        .update(buf)
-                        .digest('hex');
+      .update(buf)
+      .digest('hex');
 
     if (signatureHash != expectedHash) {
       throw new Error("Couldn't validate the request signature.");
@@ -369,96 +369,96 @@ app.listen(PORT);
 console.log('Listening on :' + PORT + '...');
 
 
-var disco = function(id, tities) {
+var disco = function (id, tities) {
   if (tities.intent && tities.intent.length) {
     if (tities.intent[0].value == "greeting") {
       request({
-          url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-          json: true
+        url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+        json: true
       }, function (error, response, body) {
-          if (!error && response.statusCode === 200) {
-              var reply = "Hey " + body['first_name'] + ", I'm Pupper, your concierge for today. Tell me if you want to plan something with your friends or family."
-              sendGenericMessage(id, {text: reply})
+        if (!error && response.statusCode === 200) {
+          var reply = "Hey " + body['first_name'] + ", I'm Pupper, your concierge for today. Tell me if you want to plan something with your friends or family."
+          sendGenericMessage(id, { text: reply })
 
-          }
+        }
       })
       return {
-          "attachment": {
-              "type": "image",
-              "payload": {
-                  "url":"http://i.giphy.com/644IL1MPwN7KE.gif"
-              }
+        "attachment": {
+          "type": "image",
+          "payload": {
+            "url": "http://i.giphy.com/644IL1MPwN7KE.gif"
           }
+        }
       };
-    } else if (tities.organize && tities.organize.length) {
-      var temptime = undefined;
-      if (tities.datetime && tities.datetime.length) {
-        temptime = new Date(tities.datetime.value);
+    } else {
+      return { text: "IDK." };
+    }
+  } else if (tities.organize && tities.organize.length) {
+    var temptime = undefined;
+    if (tities.datetime && tities.datetime.length) {
+      temptime = new Date(tities.datetime.value);
+    }
+    if (!temptime) {
+      if (tities.organize[0].value == "lunch") {
+        temptime = new Date((new Date()).setHours(13, 0))
+      } else if (tities.organize[0].value == "dinner") {
+        temptime = new Date((new Date()).setHours(22, 0))
       }
-      if (!temptime) {
-        if (tities.organize[0].value == "lunch") {
-          temptime = new Date((new Date()).setHours(13, 0))
-        } else if (tities.organize[0].value == "dinner") {
-          temptime = new Date((new Date()).setHours(22, 0))
+    }
+    eventObj = {
+      event: tities.organize[0].value,
+      time: temptime,
+      people: party,
+      where: []
+    }
+
+    request({
+      url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+      json: true
+    }, function (error, response, body) {
+      if (!error && response.statusCode === 200) {
+        for (var guy in eventObj.people) {
+          if (id != eventObj.people[guy]) {
+            var reply = body['first_name'] + " " + body['last_name'] + " has made plans for " + eventObj.event + " at " + eventObj.temptime.getHours() + ":00. Click Ok, or select a different time";
+            var prevHour = eventObj.temptime.getHours();
+            var nextHour = eventObj.temptime.getHours();
+            if ((prevHour - 1) < 0) {
+              prevHour = 23;
+            }
+            if ((nextHour + 1) > 23) {
+              nextHour = 0;
+            }
+            sendGenericMessage(guy, {
+              text: reply,
+              "quick_replies": [
+                {
+                  "content_type": "text",
+                  "title": "" + prevHour,
+                  "payload": "HOURSELECT^" + prevHour + "^"
+                },
+                {
+                  "content_type": "text",
+                  "title": "" + "OK",
+                  "payload": "HOURSELECT^" + eventObj.temptime.getHours() + "^"
+                },
+                {
+                  "content_type": "text",
+                  "title": "" + nextHour,
+                  "payload": "HOURSELECT^" + nextHour + "^"
+                }
+              ]
+            })
+          }
         }
       }
-      eventObj = {
-        event: tities.organize[0].value,
-        time: temptime,
-        people: party,
-        where: []
-      }
+    });
 
-      request({
-          url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-          json: true
-      }, function (error, response, body) {
-          if (!error && response.statusCode === 200) {
-            for (var guy in eventObj.people) {
-              if (id != eventObj.people[guy]) {
-                var reply = body['first_name'] + " " + body['last_name'] + " has made plans for " + eventObj.event + " at " + eventObj.temptime.getHours() + ":00. Click Ok, or select a different time";
-                var prevHour = eventObj.temptime.getHours();
-                var nextHour = eventObj.temptime.getHours();
-                if ((prevHour - 1) < 0) {
-                  prevHour = 23;
-                }
-                if ((nextHour + 1) > 23) {
-                  nextHour = 0;
-                }
-                sendGenericMessage(guy, {
-                  text: reply,
-                  "quick_replies":[
-                    {
-                      "content_type":"text",
-                      "title":"" + prevHour,
-                      "payload":"HOURSELECT^"+prevHour+"^"
-                    },
-                    {
-                      "content_type":"text",
-                      "title":"" + "OK",
-                      "payload":"HOURSELECT^"+eventObj.temptime.getHours()+"^"
-                    },
-                    {
-                      "content_type":"text",
-                      "title":"" + nextHour,
-                      "payload":"HOURSELECT^"+nextHour+"^"
-                    }
-                  ]
-                })
-              }
-            }
-          }
-      });
-
-      return "Cool, I'll check with others and let you know about your " + tities.organize[0].value + " plans";
-    } else {
-      return {text: "IDK."};
-    }
+    return "Cool, I'll check with others and let you know about your " + tities.organize[0].value + " plans";
   } else {
-    return {text: "IDK."};
+    return { text: "IDK." };
   }
 }
-var discombobulate = function(id, request, response) {
+var discombobulate = function (id, request, response) {
   var groupID = -1;
   if (id) {
     for (var group in groups) {
@@ -468,7 +468,7 @@ var discombobulate = function(id, request, response) {
     }
     if (groupID == -1) {
       groups.push([id]);
-      groupID = groups.length-1;
+      groupID = groups.length - 1;
     }
     var execidentifier = response.text.split("^");
     if (execidentifier[1]) {
@@ -479,10 +479,10 @@ var discombobulate = function(id, request, response) {
         response.text = menulist[execidentifier[1]](groupID, id, request.entities);
       }
 
-    } else if (response.quickreplies && response.quickreplies.length){
+    } else if (response.quickreplies && response.quickreplies.length) {
       var data = {
-          text: response.text,
-          quick_replies: []
+        text: response.text,
+        quick_replies: []
       }
       for (var option in response.quickreplies) {
         data.quick_replies.push({
@@ -492,8 +492,8 @@ var discombobulate = function(id, request, response) {
         });
       }
       response.text = data;
-    }  else {
-      response.text = {text: response.text};
+    } else {
+      response.text = { text: response.text };
     }
     console.log("RESPONSE", JSON.stringify(response));
     console.log("EVENT", eventObj);
@@ -537,24 +537,24 @@ var allitems = [].concat(mains.list).concat(starters.list).concat(drinks.list).c
 var allprices = [].concat(mains.prices).concat(starters.prices).concat(drinks.prices).concat(desserts.prices).concat(specials.prices);
 
 var menulist = {
-  menu: function(group, id, entities) {
+  menu: function (group, id, entities) {
     var menutypes = {
-      all: function() {
+      all: function () {
         return menu();
       },
-      mains: function() {
+      mains: function () {
         return generateButton(mains);
       },
-      specials: function() {
+      specials: function () {
         return generateButton(specials);
       },
-      drinks: function() {
+      drinks: function () {
         return generateButton(drinks);
       },
-      starters: function() {
+      starters: function () {
         return generateButton(starters);
       },
-      desserts: function() {
+      desserts: function () {
         return generateButton(desserts);
       }
     };
@@ -563,54 +563,54 @@ var menulist = {
     } else if (entities.quantity) {
       if (entities.joinuser) {
         if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
-            var hisgroup = -1;
-            for (var group in groups) {
-              if (groups[group].indexOf(enkryptid) != -1) {
-                hisgroup = group;
-              }
+          var hisgroup = -1;
+          for (var group in groups) {
+            if (groups[group].indexOf(enkryptid) != -1) {
+              hisgroup = group;
             }
-            if (hisgroup == -1) {
-              groups.push([enkryptid]);
-              hisgroup = groups.length-1;
-            }
-            var copy= {
-              group: hisgroup,
-              id: enkryptid,
-              quantity: entities.quantity[0].value,
-              item: entities.quantity[0].product.value,
-              price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
-              paid: false,
-              done: false
-            }
-            orders.push(copy);
-            request({
-                url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-                json: true
-            }, function (error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    for (var group in groups) {
-                      if (groups[group].indexOf(enkryptid) != -1) {
-                        groups[group].splice(groups[group].indexOf(enkryptid), 1);
-                      }
-                    }
-                    groups[group].push(enkryptid);
-                    var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
-                    sendGenericMessage(enkryptid, {text: reply})
-                }
-            });
-            return {text: "Done! He should get a message about the order you've placed for him shortly."};
           }
+          if (hisgroup == -1) {
+            groups.push([enkryptid]);
+            hisgroup = groups.length - 1;
+          }
+          var copy = {
+            group: hisgroup,
+            id: enkryptid,
+            quantity: entities.quantity[0].value,
+            item: entities.quantity[0].product.value,
+            price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
+            paid: false,
+            done: false
+          }
+          orders.push(copy);
+          request({
+            url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+            json: true
+          }, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+              for (var group in groups) {
+                if (groups[group].indexOf(enkryptid) != -1) {
+                  groups[group].splice(groups[group].indexOf(enkryptid), 1);
+                }
+              }
+              groups[group].push(enkryptid);
+              var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
+              sendGenericMessage(enkryptid, { text: reply })
+            }
+          });
+          return { text: "Done! He should get a message about the order you've placed for him shortly." };
+        }
       } else {
         orders.push({
           group: group,
           id: id,
           quantity: entities.quantity[0].value,
           item: entities.quantity[0].product.value,
-          price:  entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
+          price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
           paid: false,
           done: false
         });
-        return {text: entities.quantity[0].value + " serving(s) of " + entities.quantity[0].product.value + " coming right up!"};
+        return { text: entities.quantity[0].value + " serving(s) of " + entities.quantity[0].product.value + " coming right up!" };
       }
     } else if (entities.order) {
       if (entities.order[0].value == 'cancel') {
@@ -621,10 +621,10 @@ var menulist = {
           }
         }
         if (flag == -1) {
-          return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
+          return { text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?" }
         } else {
           var spliced = orders.splice(flag, 1);
-          return {text: "Fret not! Your last order of " + spliced[0].quantity + " serving(s) of " + spliced[0].item + " has been cancelled."};
+          return { text: "Fret not! Your last order of " + spliced[0].quantity + " serving(s) of " + spliced[0].item + " has been cancelled." };
         }
       } else if (entities.order[0].value == 'previous') {
         if (entities.joinuser) {
@@ -636,7 +636,7 @@ var menulist = {
               }
             }
             if (flag == -1) {
-              return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
+              return { text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?" }
             } else {
               var copy = JSON.parse(JSON.stringify(orders[flag]));
               var hisgroup = -1;
@@ -647,110 +647,111 @@ var menulist = {
               }
               if (hisgroup == -1) {
                 groups.push([enkryptid]);
-                hisgroup = groups.length-1;
+                hisgroup = groups.length - 1;
               }
               copy.id = enkryptid;
               copy.group = hisgroup;
               orders.push(copy);
               request({
-                  url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-                  json: true
+                url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                json: true
               }, function (error, response, body) {
-                  if (!error && response.statusCode === 200) {
-                      for (var group in groups) {
-                        if (groups[group].indexOf(enkryptid) != -1) {
-                          groups[group].splice(groups[group].indexOf(enkryptid), 1);
-                        }
-                      }
-                      groups[group].push(enkryptid);
-                      var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
-                      sendGenericMessage(enkryptid, {text: reply})
+                if (!error && response.statusCode === 200) {
+                  for (var group in groups) {
+                    if (groups[group].indexOf(enkryptid) != -1) {
+                      groups[group].splice(groups[group].indexOf(enkryptid), 1);
+                    }
                   }
+                  groups[group].push(enkryptid);
+                  var reply = body['first_name'] + " " + body['last_name'] + " has ordered " + copy.quantity + " serving(s) of " + copy.item + " for you. If that's not cool, you can cancel anytime.";
+                  sendGenericMessage(enkryptid, { text: reply })
+                }
               });
-              return {text: "Done! He should get a message about the order you've placed for him shortly."};
+              return { text: "Done! He should get a message about the order you've placed for him shortly." };
             }
           }
         } else {
-          return {text: "I don't understand :(. Could you perhaps phrase that in a way that is simpler to understand?"}
+          return { text: "I don't understand :(. Could you perhaps phrase that in a way that is simpler to understand?" }
         }
       }
     } else if (entities.bill) {
-        var items = [];
-        var split = true;
-        if (entities.bill[0].value == "split") {
-          items = orders.filter(function(obj) {
-            if (!obj.paid && obj.id == id) {
-              return true;
-            }
-          });
+      var items = [];
+      var split = true;
+      if (entities.bill[0].value == "split") {
+        items = orders.filter(function (obj) {
+          if (!obj.paid && obj.id == id) {
+            return true;
+          }
+        });
 
-        } else if (entities.bill[0].value == "group") {
-          items = orders.filter(function(obj) {
-            if (!obj.paid && obj.group == group) {
-              return true;
-            }
-          });
-          split = false;
-        }
-        if (!items.length) {
-          return {text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"}
-        }
-        var rest = {
-          "attachment":{
-            "type":"template",
-            "payload":{
-              "template_type":"receipt",
-              "recipient_name":"Recipient",
-              "order_number":"" + Math.random(),
-              "currency":"INR",
-              "payment_method":"Online",
-              "order_url":"http://m.me/brobarbot",
-              "elements":[],
-              "address":{
-                "street_1":"A hardcoded",
-                "street_2":"address example",
-                "city":"Bro City",
-                "postal_code":"94025",
-                "state":"KA",
-                "country":"IN"
-              },
-              "summary":{
-                "subtotal":0.0,
-                "shipping_cost":0.0,
-                "total_tax":0.0,
-                "total_cost":0.0
-              }
+      } else if (entities.bill[0].value == "group") {
+        items = orders.filter(function (obj) {
+          if (!obj.paid && obj.group == group) {
+            return true;
+          }
+        });
+        split = false;
+      }
+      if (!items.length) {
+        return { text: "You haven't ordered anything yet, but it's not going to stay that way. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?" }
+      }
+      var rest = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "receipt",
+            "recipient_name": "Recipient",
+            "order_number": "" + Math.random(),
+            "currency": "INR",
+            "payment_method": "Online",
+            "order_url": "http://m.me/brobarbot",
+            "elements": [],
+            "address": {
+              "street_1": "A hardcoded",
+              "street_2": "address example",
+              "city": "Bro City",
+              "postal_code": "94025",
+              "state": "KA",
+              "country": "IN"
+            },
+            "summary": {
+              "subtotal": 0.0,
+              "shipping_cost": 0.0,
+              "total_tax": 0.0,
+              "total_cost": 0.0
             }
           }
         }
-        var total = 0;
-        for (var item in items) {
-          rest.attachment.payload.elements.push({
-            image_url: "http://i.imgur.com/GTlVOvE.png",
-            title: items[item].item,
-            quantity: items[item].quantity,
-            price: items[item].price,
-            currency: "INR"
-          });
-          total = total + items[item].price;
-          console.log("TOTAL", total);
-        }
-        rest.attachment.payload.summary.subtotal = total;
-        rest.attachment.payload.summary.total_cost = total;
-        console.log(JSON.stringify(rest));
-        sendGenericMessage(id, rest)
+      }
+      var total = 0;
+      for (var item in items) {
+        rest.attachment.payload.elements.push({
+          image_url: "http://i.imgur.com/GTlVOvE.png",
+          title: items[item].item,
+          quantity: items[item].quantity,
+          price: items[item].price,
+          currency: "INR"
+        });
+        total = total + items[item].price;
+        console.log("TOTAL", total);
+      }
+      rest.attachment.payload.summary.subtotal = total;
+      rest.attachment.payload.summary.total_cost = total;
+      console.log(JSON.stringify(rest));
+      sendGenericMessage(id, rest)
 
-        setTimeout(function() {sendGenericMessage(id, {
+      setTimeout(function () {
+        sendGenericMessage(id, {
           attachment: {
-            "type":"template",
-            "payload":{
-              "template_type":"button",
-              "text":"Would you like to pay now?",
-              "buttons":[{
+            "type": "template",
+            "payload": {
+              "template_type": "button",
+              "text": "Would you like to pay now?",
+              "buttons": [{
                 type: "postback",
                 title: "Yes",
-                payload: "PAYMENT_^"+(split ? "split" : "table")+"^"
-              },{
+                payload: "PAYMENT_^" + (split ? "split" : "table") + "^"
+              }, {
                 type: "postback",
                 title: "No",
                 payload: "NONE"
@@ -758,28 +759,28 @@ var menulist = {
             }
           }
         });
-        }, 2000);
-      } else if (entities.joinuser) {
+      }, 2000);
+    } else if (entities.joinuser) {
       if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
         request({
-            url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-            json: true
+          url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+          json: true
         }, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-                for (var group in groups) {
-                  if (groups[group].indexOf(enkryptid) != -1) {
-                    groups[group].splice(groups[group].indexOf(enkryptid), 1);
-                  }
-                }
-                groups[group].push(enkryptid);
-                var reply = body['first_name'] + " " + body['last_name'] + " has added you to a group on Brobar. People in this group can now order for each other and pay/split the bill."
-                sendGenericMessage(enkryptid, {text: reply})
-
+          if (!error && response.statusCode === 200) {
+            for (var group in groups) {
+              if (groups[group].indexOf(enkryptid) != -1) {
+                groups[group].splice(groups[group].indexOf(enkryptid), 1);
+              }
             }
+            groups[group].push(enkryptid);
+            var reply = body['first_name'] + " " + body['last_name'] + " has added you to a group on Brobar. People in this group can now order for each other and pay/split the bill."
+            sendGenericMessage(enkryptid, { text: reply })
+
+          }
         })
-        return {text: "Adding your friend to your group. He should get a message shortly."}
+        return { text: "Adding your friend to your group. He should get a message shortly." }
       } else {
-        return {text: "I could not find that user. This app is in beta and not public, but I like your enthusiasm in trying out random edge cases."}
+        return { text: "I could not find that user. This app is in beta and not public, but I like your enthusiasm in trying out random edge cases." }
       }
     } else if (entities.allergy) {
       if (modifier[id]) {
@@ -789,11 +790,11 @@ var menulist = {
           modifier[id].allergies = [entities.allergy[0].value]
         }
       } else {
-        modifier[id]={
+        modifier[id] = {
           allergies: [entities.allergy[0].value]
         };
       }
-      return {text: "My sympathies. I'll let the guys at the kitchen know right away."};
+      return { text: "My sympathies. I'll let the guys at the kitchen know right away." };
     } else if (entities.preferences) {
       if (modifier[id]) {
         if (modifier[id].preferences) {
@@ -802,11 +803,11 @@ var menulist = {
           modifier[id].preferences = [entities.preferences[0].value]
         }
       } else {
-        modifier[id]={
+        modifier[id] = {
           preferences: [entities.preferences[0].value]
         };
       }
-      return {text: "That's cool. I'll let the guys at the kitchen know right away."};
+      return { text: "That's cool. I'll let the guys at the kitchen know right away." };
     } else if (entities.checkout) {
       if (entities.checkout[0].value.trim() == "split") {
         for (var item in orders) {
@@ -814,75 +815,75 @@ var menulist = {
             orders.splice(item, 1);
           }
         }
-        return {text: "All done! Your order history is cleared. You're good to go."};
+        return { text: "All done! Your order history is cleared. You're good to go." };
       } else if (entities.checkout[0].value.trim() == "table") {
         for (var item in orders) {
           if (orders[item].group == group) {
             orders.splice(item, 1);
           }
         }
-        return {text: "All done! You've paid for your entire table. You all are good to go."};
+        return { text: "All done! You've paid for your entire table. You all are good to go." };
       }
     } else {
-      return {text: "Place an order or ask for the bill when you're done. Let me know if you like your food spicy or sweet, and if there's anything you're allergic to. AlphaDawg is happy to serve."};
+      return { text: "Place an order or ask for the bill when you're done. Let me know if you like your food spicy or sweet, and if there's anything you're allergic to. AlphaDawg is happy to serve." };
     }
   },
-  intro: function(group, id, entities) {
+  intro: function (group, id, entities) {
     request({
-        url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-        json: true
+      url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+      json: true
     }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            var reply = "Hey " + body['first_name'] + ", Welcome to BroBar, my name is AlphaDawg and I will be your server tonight. Would you like to hear about our specials today? "
-            sendGenericMessage(id, {text: reply})
+      if (!error && response.statusCode === 200) {
+        var reply = "Hey " + body['first_name'] + ", Welcome to BroBar, my name is AlphaDawg and I will be your server tonight. Would you like to hear about our specials today? "
+        sendGenericMessage(id, { text: reply })
 
-        }
+      }
     })
     return {
-        "attachment": {
-            "type": "image",
-            "payload": {
-                "url":"http://i.giphy.com/l2JhKi0Xs9AQ5tqtG.gif"
-            }
+      "attachment": {
+        "type": "image",
+        "payload": {
+          "url": "http://i.giphy.com/l2JhKi0Xs9AQ5tqtG.gif"
         }
+      }
     };
   },
-  mains: function() {
+  mains: function () {
     return generateButton(mains);
   },
-  specials: function() {
+  specials: function () {
     return generateButton(specials);
   },
-  drinks: function() {
+  drinks: function () {
     return generateButton(drinks);
   },
-  starters: function() {
+  starters: function () {
     return generateButton(starters);
   }
 }
 
-var menu = function() {
-  return {text: "Whew, you must be really hungry if you want to see our entire menu. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?"};
+var menu = function () {
+  return { text: "Whew, you must be really hungry if you want to see our entire menu. We have a variety of selections from our mains, starters, drinks, desserts and specials. Which one would you like to see?" };
 }
 
-var generateButton = function(funcloop) {
-    var items = funcloop;
-    var attachment={
-      attachment: {
-        "type":"template",
-        "payload":{
-          "template_type":"button",
-          "text":"Ok, here you go: " + items.name,
-          "buttons":[]
-        }
+var generateButton = function (funcloop) {
+  var items = funcloop;
+  var attachment = {
+    attachment: {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "Ok, here you go: " + items.name,
+        "buttons": []
       }
     }
-    for (var item in items.list) {
-      attachment.attachment.payload.buttons.push({
-        type: "postback",
-        title: items.list[item],
-        payload: "ORDER_ITEM_^"+items.list[item]+"^"
-      });
-    }
-    return attachment;
+  }
+  for (var item in items.list) {
+    attachment.attachment.payload.buttons.push({
+      type: "postback",
+      title: items.list[item],
+      payload: "ORDER_ITEM_^" + items.list[item] + "^"
+    });
+  }
+  return attachment;
 }
