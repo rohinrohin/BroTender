@@ -79,7 +79,7 @@ var party = [enkryptid, baller, cpk];
 var places = {
   name: "Pick A Restaurant",
   list: ["Leon Grill", "Monkey Bar", "New Plantain Leaf"],
-  latlong: [[12.969086, 77.648610], [12.970477, 77.645370], [12.971763,	77.654693]],
+  latlong: [[12.969086, 77.648610], [12.970477, 77.645370], [12.981763,	77.674693]],
   prices: [0, 0]
 }
 var locations = {};
