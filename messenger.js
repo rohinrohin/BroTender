@@ -366,7 +366,7 @@ console.log('Listening on :' + PORT + '...');
 
 var disco = function(tities) {
   if (tities.intent) {
-    if (tities.intent.value == "greeting") {
+    if (tities.intent[0].value == "greeting") {
       request({
           url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
           json: true
