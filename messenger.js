@@ -314,13 +314,15 @@ app.post('/webhook', (req, res) => {
                   count += eventObj.times[key];
                 }
                 if (count >= (eventObj.people.length) - 1) {
-                  var actualtimeindex = 0;
+                  var actualtimecount = 0;
+                  var actualtimeindex = -1;
                   for (var key in eventObj.times) {
-                    if (eventObj.times[key] > actualtimeindex) {
+                    if (eventObj.times[key] > actualtimecount) {
+                      actualtimecount = eventObj.times[key];
                       actualtimeindex = key;
                     }
                   }
-                  var actualtime = eventObj.times[actualtimeindex];
+                  var actualtime = actualtimeindex;
                   console.log("ACT", actualtime);
                   eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                 }
