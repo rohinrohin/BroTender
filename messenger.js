@@ -389,6 +389,7 @@ var disco = function(tities) {
   }
 }
 var discombobulate = function(id, request, response) {
+  console.log('HERE')
   var groupID = -1;
   if (id) {
     for (var group in groups) {
