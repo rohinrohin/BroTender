@@ -37,7 +37,7 @@ try {
 }
 
 // Webserver parameter
-const PORT = 443;
+const PORT = 8080;
 
 // Wit.ai parameters
 const WIT_TOKEN = 'D6DLOBYWJHM2VZRI22AF6UP2TFHQPDY4';
@@ -141,12 +141,12 @@ const actions = {
     // Let's retrieve the Facebook user whose session belongs to
     console.log("REQUEST", JSON.stringify(request));
     const recipientId = sessions[request.sessionId].fbid;
-    response = discombobulate(recipientId, request, response); 
+    response = discombobulate(recipientId, request, response);
     if (recipientId) {
       // Yay, we found our recipient!
       // Let's forward our bot response to her.
       // We return a promise to let our bot know when we're done sending
-      
+
       return sendGenericMessage(recipientId, response.text)
 //      .then(() => null)
 //      .catch((err) => {
@@ -344,15 +344,7 @@ function verifyRequestSignature(req, res, buf) {
   }
 }
 
-var server = https.createServer(
-  {
-    key: fs.readFileSync('/etc/letsencrypt/live/rohin.me/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/rohin.me/fullchain.pem')
-  },
-  app
-)
-
-server.listen('443')
+app.listen(PORT);
 
 
 
@@ -374,7 +366,7 @@ var discombobulate = function(id, request, response) {
     if (execidentifier[1]) {
       console.log('EXEC', execidentifier);
       response.text = menulist[execidentifier[1]](groupID, id, request.entities);
-      
+
     } else if (response.quickreplies && response.quickreplies.length){
       var data = {
           text: response.text,
@@ -578,7 +570,7 @@ var menulist = {
               return true;
             }
           });
-          
+
         } else if (entities.bill[0].value == "group") {
           items = orders.filter(function(obj) {
             if (!obj.paid && obj.group == group) {
@@ -598,7 +590,7 @@ var menulist = {
               "recipient_name":"Recipient",
               "order_number":"" + Math.random(),
               "currency":"INR",
-              "payment_method":"Online",        
+              "payment_method":"Online",
               "order_url":"http://m.me/brobarbot",
               "elements":[],
               "address":{
@@ -634,7 +626,7 @@ var menulist = {
         rest.attachment.payload.summary.total_cost = total;
         console.log(JSON.stringify(rest));
         sendGenericMessage(id, rest)
-        
+
         setTimeout(function() {sendGenericMessage(id, {
           attachment: {
             "type":"template",
@@ -730,7 +722,7 @@ var menulist = {
         if (!error && response.statusCode === 200) {
             var reply = "Hey " + body['first_name'] + ", Welcome to BroBar, my name is AlphaDawg and I will be your server tonight. Would you like to hear about our specials today? "
             sendGenericMessage(id, {text: reply})
-            
+
         }
     })
     return {
