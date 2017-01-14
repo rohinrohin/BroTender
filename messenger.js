@@ -250,12 +250,15 @@ app.post('/webhook', (req, res) => {
         // We retrieve the Facebook user ID of the sender
         const sender = event.sender.id;
         const sessionId = findOrCreateSession(sender);
+        console.log('received event', JSON.stringify(event));
         if (event.message && !event.message.is_echo) {
+
           // We retrieve the user's current session, or create one if it doesn't exist
           // This is needed for our bot to figure out the conversation history
 
           // We retrieve the message content
           const {text, attachments} = event.message;
+
 
           if (attachments) {
             // We received an attachment
@@ -291,7 +294,6 @@ app.post('/webhook', (req, res) => {
               })
           }
         } else {
-          console.log('received event', JSON.stringify(event));
           if (event.postback) {
             console.log("PAYLOAD", event.postback);
             if (event.postback.payload) {
