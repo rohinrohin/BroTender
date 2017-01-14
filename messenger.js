@@ -304,7 +304,7 @@ app.post('/webhook', (req, res) => {
             console.log("PAYLOAD", event.postback);
             if (event.postback.payload) {
               if (event.postback.payload.startsWith("ORDER_ITEM")) {
-                if (witflag) {
+                if (!witflag) {
                   event.postback.payload = "Order a " + event.postback.payload.split("^")[1];
                 } else {
                   if (!eventObj.places[event.postback.payload.split("^")[1]]) {
@@ -406,7 +406,7 @@ app.post('/webhook', (req, res) => {
             console.log("PAYLOAD", event.message.quick_reply);
             if (event.message.quick_reply.payload) {
               if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
-                if (witflag) {
+                if (!witflag) {
                   event.message.quick_reply.payload = "Order a " + event.message.quick_reply.payload.split("^")[1];
                 } else {
                   if (!eventObj.places[event.message.quick_reply.payload.split("^")[1]]) {
