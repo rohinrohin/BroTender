@@ -364,7 +364,7 @@ app.listen(PORT);
 console.log('Listening on :' + PORT + '...');
 
 
-var disco = function(tities) {
+var disco = function(id, tities) {
   if (tities.intent) {
     if (tities.intent[0].value == "greeting") {
       request({
@@ -408,7 +408,7 @@ var discombobulate = function(id, request, response) {
     if (execidentifier[1]) {
       console.log('EXEC', execidentifier);
       if (witflag) {
-        response.text = disco(request.entities);
+        response.text = disco(id, request.entities);
       } else {
         response.text = menulist[execidentifier[1]](groupID, id, request.entities);
       }
