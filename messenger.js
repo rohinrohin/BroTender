@@ -347,7 +347,7 @@ app.post('/webhook', (req, res) => {
                         var desttext = origintext+"|"+eventObj.where.latlong.join(",");
                         console.log("AYYYYYY", "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE");
                         request("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE", function(err, response, body) {
-                          console.log(response, body);
+                          console.log(body);
                         });
                         return;
                       }
@@ -375,7 +375,7 @@ app.post('/webhook', (req, res) => {
                 for (var key in eventObj.times) {
                   count += eventObj.times[key];
                 }
-                if (count >= (eventObj.people.length) - 1) {
+                if (count >= eventObj.people.length) {
                   var actualtimecount = 0;
                   var actualtimeindex = -1;
                   for (var key in eventObj.times) {
@@ -477,7 +477,7 @@ app.post('/webhook', (req, res) => {
                 for (var key in eventObj.times) {
                   count += eventObj.times[key];
                 }
-                if (count >= (eventObj.people.length) - 1) {
+                if (count >= eventObj.people.length) {
                   var actualtimecount = 0;
                   var actualtimeindex = -1;
                   for (var key in eventObj.times) {
