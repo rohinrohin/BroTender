@@ -424,6 +424,7 @@ var disco = function (id, tities) {
   } else if (tities.organize && tities.organize.length) {
     var temptime = undefined;
     if (tities.datetime && tities.datetime.length) {
+      temptime = new Date((new Date()).setHours(parseInt(tities.datetime[0].value.split("T")[1].substring(0,2)), 0))
       temptime = new Date(tities.datetime[0].value);
       console.log("LMAO", temptime, tities.datetime[0].value)
     }
