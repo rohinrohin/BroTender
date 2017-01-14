@@ -313,7 +313,7 @@ app.post('/webhook', (req, res) => {
                 for (var key in eventObj.times) {
                   count += eventObj.times[key];
                 }
-                if (count >= eventObj.people.length) {
+                if (count >= (eventObj.people.length) - 1) {
                   var actualtimeindex = 0;
                   for (var key in eventObj.times) {
                     if (eventObj.times[key] > actualtimeindex) {
