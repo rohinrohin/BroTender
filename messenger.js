@@ -397,6 +397,7 @@ var disco = function (id, tities) {
     var temptime = undefined;
     if (tities.datetime && tities.datetime.length) {
       temptime = new Date(tities.datetime.value);
+      console.log("LMAO", temptime, tities.datetime.value)
     }
     if (!temptime) {
       if (tities.organize[0].value == "lunch") {
