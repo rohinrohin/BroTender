@@ -425,9 +425,11 @@ var disco = function (id, tities) {
             var nextHour = eventObj.time.getHours();
             if ((prevHour - 1) < 0) {
               prevHour = 23;
+            } else {
+              prevHour -= 1;
             }
             if ((nextHour + 1) > 23) {
-              nextHour = 0;
+              nextHour += 1;
             }
             sendGenericMessage(eventObj.people[guy], {
               text: reply,
