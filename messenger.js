@@ -453,8 +453,7 @@ var disco = function (id, tities) {
         }
       }
     });
-
-    return "Cool, I'll check with others and let you know about your " + tities.organize[0].value + " plans";
+    return {text: "Cool, I'll check with others and let you know about your " + tities.organize[0].value + " plans"};
   } else {
     return { text: "IDK." };
   }
