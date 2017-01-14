@@ -324,8 +324,8 @@ app.post('/webhook', (req, res) => {
                   }
                   var actualtime = actualtimeindex;
                   eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
+                  eventObj.times = [];
                 }
-                eventObj.times = [];
                 console.log("WHAT", eventObj);
                 return;
               }
