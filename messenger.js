@@ -356,6 +356,9 @@ app.post('/webhook', (req, res) => {
                             }
                             for (var j in body.rows[guy].elements) {
                               if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
+                                if (j==2) {
+                                  j = 1;
+                                }
                                 console.log("ITER", guy, j);
                                 cb([j, guy], function(arr) {
                                   request({
