@@ -70,7 +70,7 @@ const token = "EAABcuqLqpc4BAFJvG9EzLvF91uQYdS0nHLUOa9sAlKeBsIn052mjpZAo0GQrM62t
 var orders = [];
 var groups = [];
 var modifier = {};
-var witflag = true;
+var witflag = false;
 var hackflag = true;
 
 var enkryptid = "1352659151433814";
