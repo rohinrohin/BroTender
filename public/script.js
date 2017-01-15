@@ -205,7 +205,7 @@ $(function () {
                     remain = remain + "</tr>"
                 }
 
-                if (aller_pref[key]) {
+                if (aller_pref[key] && aller_pref[key].preferences && aller_pref[key].allergies) {
                     remain += "<tr > <td colspan=\"6\" class=\"grey\">Preferences: " + aller_pref[key].preferences.join(',') + "</td> </tr>"
                     remain += "<tr > <td colspan=\"6\" class=\"red\">Allergies: " + aller_pref[key].allergies.join(',') + "</td> </tr>"
                     console.log(aller_pref[key])
