@@ -205,7 +205,7 @@ var witget = function () {
 
 // Starting our webserver and putting it all together
 const app = express();
-app.use(express.static('public'))
+app.use(express.static(__dirname + '/public'));
 app.use(({method, url}, rsp, next) => {
   rsp.on('finish', () => {
     console.log(`${rsp.statusCode} ${method} ${url}`);
@@ -312,7 +312,7 @@ app.post('/webhook', (req, res) => {
             if (event.postback.payload) {
               if (event.postback.payload.startsWith("ORDER_ITEM")) {
                 if (!witflag) {
-                  event.postback.payload = "Order a " + event.postback.payload.split("^")[1];
+                  event.postback.payload = "Order 1 " + event.postback.payload.split("^")[1];
                 } else {
                   if (!eventObj.places[event.postback.payload.split("^")[1]]) {
                     eventObj.places[event.postback.payload.split("^")[1]] = 1;
@@ -509,7 +509,7 @@ app.post('/webhook', (req, res) => {
               }
               if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
                 if (!witflag) {
-                  event.message.quick_reply.payload = "Order a " + event.message.quick_reply.payload.split("^")[1];
+                  event.message.quick_reply.payload = "Order 1 " + event.message.quick_reply.payload.split("^")[1];
                 } else {
                   if (!eventObj.places[event.message.quick_reply.payload.split("^")[1]]) {
                     eventObj.places[event.message.quick_reply.payload.split("^")[1]] = 1;
@@ -673,7 +673,7 @@ var disco = function (id, tities) {
         }
       };
     } else {
-      return { text: "IDK." };
+      return { text: "" };
     }
   } else if (tities.organize && tities.organize.length) {
     var temptime = undefined;
