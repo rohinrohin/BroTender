@@ -351,37 +351,44 @@ app.post('/webhook', (req, res) => {
                           for (var guy in eventObj.people) {
                             var kkk="";
                             console.log("AYYY", body["rows"]);
+                            var cb = function(varya, runner) {
+                              runner(varya);
+                            }
                             for (var j in body.rows[guy].elements) {
                               if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
-                                request({
-                                  url: 'https://graph.facebook.com/v2.6/' + eventObj.people[guy] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
-                                  json: true
-                                }, function (error, response, bodya) {
-                                  if (!error && response.statusCode === 200) {
-                                    kkk="You will be carpooling with " + bodya["first_name"] + " " + bodya["last_name"];
-                                    sendGenericMessage(eventObj.people[guy], {text: kkk});
-                                  }
+                                cb(guy, function(guy) {
+                                  request({
+                                    url: 'https://graph.facebook.com/v2.6/' + eventObj.people[guy] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                                    json: true
+                                  }, function (error, response, bodya) {
+                                    if (!error && response.statusCode === 200) {
+                                      kkk="You will be carpooling with " + bodya["first_name"] + " " + bodya["last_name"];
+                                      sendGenericMessage(eventObj.people[guy], {text: kkk});
+                                    }
+                                  });
                                 });
                                 break;
                               }
                             }
-                            setTimeout(function() {
-                              sendGenericMessage(eventObj.people[guy], {
-                                text: "Ok, here's the plan: You guys are meeting up for " + eventObj.event + " at " + eventObj.where.name + ". Confirm once you're there, or let us know if you intend to skip.",
-                                "quick_replies": [
-                                  {
-                                    "content_type": "text",
-                                    "title": "" + "I'm there",
-                                    "payload": "CONFIRM^YES^"
-                                  },
-                                  {
-                                    "content_type": "text",
-                                    "title": "" + "I'm gonna skip",
-                                    "payload": "CONFIRM^NO^"
-                                  }
-                                ]
-                              })
-                            }, 1000);
+                            cb(guy, function(guy) {
+                              setTimeout(function() {
+                                sendGenericMessage(eventObj.people[guy], {
+                                  text: "Ok, here's the plan: You guys are meeting up for " + eventObj.event + " at " + eventObj.where.name + ". Confirm once you're there, or let us know if you intend to skip.",
+                                  "quick_replies": [
+                                    {
+                                      "content_type": "text",
+                                      "title": "" + "I'm there",
+                                      "payload": "CONFIRM^YES^"
+                                    },
+                                    {
+                                      "content_type": "text",
+                                      "title": "" + "I'm gonna skip",
+                                      "payload": "CONFIRM^NO^"
+                                    }
+                                  ]
+                                })
+                              }, 1000);
+                            });
                           }
                         });
                         return;
