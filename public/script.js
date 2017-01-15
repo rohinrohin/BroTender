@@ -237,7 +237,7 @@ $(function() {
     console.log(poparr)
 });
 
-function dodone(e) {
+dodone = function(e) {
     $.post('/done', {id: e.id}, function() {
         console.log("done. ")
         $('#' + e.id).parent().parent().addClass('addgreen')
