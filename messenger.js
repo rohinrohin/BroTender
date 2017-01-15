@@ -357,14 +357,14 @@ app.post('/webhook', (req, res) => {
                             for (var j in body.rows[guy].elements) {
                               if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
                                 console.log("ITER", guy, j);
-                                cb(j, function(guy) {
+                                cb([j, guy], function(arr) {
                                   request({
-                                    url: 'https://graph.facebook.com/v2.6/' + eventObj.people[guy] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                                    url: 'https://graph.facebook.com/v2.6/' + eventObj.people[arr[0]] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
                                     json: true
                                   }, function (error, response, bodya) {
                                     if (!error && response.statusCode === 200) {
                                       kkk="You will be carpooling with " + bodya["first_name"] + " " + bodya["last_name"];
-                                      sendGenericMessage(eventObj.people[guy], {text: kkk});
+                                      sendGenericMessage(eventObj.people[arr[1]], {text: kkk});
                                     }
                                   });
                                 });
