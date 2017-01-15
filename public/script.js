@@ -178,7 +178,7 @@ $(function () {
             var maincount = 0;
             for (var key in poparr) {
                 maincount++;
-                var remain = table + key + "</th><th colspan=\"3\" class=\"big\">TABLE# 1" + poparr[key][0].group + tablesplt;
+                var remain = table + key + "</th><th colspan=\"3\" class=\"big\">TABLE# 1" + tablesplt;
                 for (key2 in poparr[key]) {
 
                     if (poparr[key][key2].done) {
