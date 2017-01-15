@@ -865,9 +865,9 @@ var menulist = {
           var copy = {
             group: hisgroup,
             id: enkryptid,
-            quantity: entities.quantity[0].value,
-            item: entities.quantity[0].product.value,
-            price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
+            quantity: entities.number[0].value,
+            item: entities.product[0].value,
+            price: entities.number[0].value * allprices[allitems.indexOf(entities.product[0].value)],
             paid: false,
             done: false
           }
@@ -893,13 +893,13 @@ var menulist = {
         orders.push({
           group: group,
           id: id,
-          quantity: entities.quantity[0].value,
-          item: entities.quantity[0].product.value,
-          price: entities.quantity[0].value * allprices[allitems.indexOf(entities.quantity[0].product.value)],
+          quantity: entities.number[0].value,
+          item: entities.product[0].value,
+          price: entities.number[0].value * allprices[allitems.indexOf(entities.product[0].value)],
           paid: false,
           done: false
         });
-        return { text: entities.quantity[0].value + " serving(s) of " + entities.quantity[0].product.value + " coming right up!" };
+        return { text: entities.number[0].value + " serving(s) of " + entities.product[0].value + " coming right up!" };
       }
     } else if (entities.order) {
       if (entities.order[0].value == 'cancel') {
