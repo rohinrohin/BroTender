@@ -71,6 +71,7 @@ var orders = [];
 var groups = [];
 var modifier = {};
 var witflag = true;
+var hackflag = true;
 
 var enkryptid = "1352659151433814";
 var baller = "1244986138929148";
@@ -379,6 +380,16 @@ app.post('/webhook', (req, res) => {
                             }
                             cb(guy, function(guy) {
                               setTimeout(function() {
+                                if (hackflag) {
+                                  if (guy == 1) {
+                                    guy = 2;
+                                    hackflag = false;
+                                  }
+                                } else {
+                                  if (guy == 1) {
+                                    hackflag = true;
+                                  }
+                                }
                                 sendGenericMessage(eventObj.people[guy], {
                                   text: "Ok, here's the plan. You guys are meeting up for " + eventObj.event + " in " + eventObj.where.name + " at " + eventObj.time.getHours() +":00 hours. Confirm once you're there, or let us know now if you intend to skip.",
                                   "quick_replies": [
