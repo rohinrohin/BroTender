@@ -1104,8 +1104,6 @@ var menulist = {
             orders.splice(item, 1);
           }
         }
-        var eventObj = {};
-        var witflag = true;
         return { text: "All done! Your order history is cleared. You're good to go." };
       } else if (entities.checkout[0].value.trim() == "table") {
         for (var item in orders) {
@@ -1113,6 +1111,8 @@ var menulist = {
             orders.splice(item, 1);
           }
         }
+        var eventObj = {};
+        witflag = true;
         return { text: "All done! You've paid for your entire table. You all are good to go." };
       }
     } else {
