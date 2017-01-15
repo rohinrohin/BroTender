@@ -347,7 +347,40 @@ app.post('/webhook', (req, res) => {
                         var desttext = origintext+"|"+eventObj.where.latlong.join(",");
                         console.log("AYYYYYY", "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE");
                         request("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE", function(err, response, body) {
-                          console.log(body);
+                          for (var guy in eventObj.people) {
+                            var kkk="";
+                            for (var j in body.rows[guy].elements) {
+                              if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
+                                request({
+                                  url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                                  json: true
+                                }, function (error, response, bodya) {
+                                  if (!error && response.statusCode === 200) {
+                                    kkk="You will be carpooling with " + bodya["first_name"] + " " + bodya["last_name"];
+                                    sendGenericMessage(eventObj.people[guy], {text: kkk});
+                                  }
+                                });
+                                break;
+                              }
+                            }
+                            setTimeout(function() {
+                              sendGenericMessage(eventObj.people[guy], {
+                                text: "Ok, here's the plan: You guys are meeting up for " + eventObj.event + " at " + eventObj.where.name + ". Confirm once you're there, or let us know if you intend to skip.",
+                                "quick_replies": [
+                                  {
+                                    "content_type": "text",
+                                    "title": "" + "I'm there",
+                                    "payload": "CONFIRM^YES^"
+                                  },
+                                  {
+                                    "content_type": "text",
+                                    "title": "" + "I'm gonna skip",
+                                    "payload": "CONFIRM^NO^"
+                                  }
+                                ]
+                              })
+                            }, 1000);
+                          }
                         });
                         return;
                       }
@@ -355,7 +388,7 @@ app.post('/webhook', (req, res) => {
                     eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                     eventObj.times = [];
                     for (var guy in eventObj.people) {
-                      sendGenericMessage(eventObj.people[guy], generateButton(places));
+                      sendGenericMessage(eventObj.people[guy], generateButtonR(places));
                     }
                   }
                   console.log("WHAT", eventObj);
@@ -388,7 +421,7 @@ app.post('/webhook', (req, res) => {
                   eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                   eventObj.times = [];
                   for (var guy in eventObj.people) {
-                    sendGenericMessage(eventObj.people[guy], generateButton(places));
+                    sendGenericMessage(eventObj.people[guy], generateButtonR(places));
                   }
                 }
                 console.log("WHAT", eventObj);
@@ -457,7 +490,7 @@ app.post('/webhook', (req, res) => {
                     eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                     eventObj.times = [];
                     for (var guy in eventObj.people) {
-                      sendGenericMessage(eventObj.people[guy], generateButton(places));
+                      sendGenericMessage(eventObj.people[guy], generateButtonR(places));
                     }
                   }
                   console.log("WHAT", eventObj);
@@ -490,7 +523,7 @@ app.post('/webhook', (req, res) => {
                   eventObj.time = new Date((new Date()).setHours(parseInt(actualtime.substring(1)), 0))
                   eventObj.times = [];
                   for (var guy in eventObj.people) {
-                    sendGenericMessage(eventObj.people[guy], generateButton(places));
+                    sendGenericMessage(eventObj.people[guy], generateButtonR(places));
                   }
                 }
                 console.log("WHAT", eventObj);
@@ -1077,6 +1110,27 @@ var generateButton = function (funcloop) {
       "payload": {
         "template_type": "button",
         "text": "Ok, here you go: " + items.name,
+        "buttons": []
+      }
+    }
+  }
+  for (var item in items.list) {
+    attachment.attachment.payload.buttons.push({
+      type: "postback",
+      title: items.list[item],
+      payload: "ORDER_ITEM_^" + items.list[item] + "^"
+    });
+  }
+  return attachment;
+}
+var generateButtonR = function (funcloop) {
+  var items = funcloop;
+  var attachment = {
+    attachment: {
+      "type": "template",
+      "payload": {
+        "template_type": "button",
+        "text": "Ok " + items.name,
         "buttons": []
       }
     }
