@@ -70,7 +70,7 @@ const token = "EAABcuqLqpc4BAFJvG9EzLvF91uQYdS0nHLUOa9sAlKeBsIn052mjpZAo0GQrM62t
 var orders = [];
 var groups = [];
 var modifier = {};
-var witflag = false;
+var witflag = true;
 var hackflag = true;
 
 var enkryptid = "1352659151433814";
@@ -673,7 +673,7 @@ var disco = function (id, tities) {
         }
       };
     } else {
-      return { text: "" };
+      return { text: "I didn't get that" };
     }
   } else if (tities.organize && tities.organize.length) {
     var temptime = undefined;
@@ -744,7 +744,7 @@ var disco = function (id, tities) {
     });
     return {text: "Cool, I'll check with others and let you know about your " + tities.organize[0].value + " plans"};
   } else {
-    return { text: "IDK." };
+    return { text: "I didn't get that" };
   }
 }
 var discombobulate = function (id, request, response) {
