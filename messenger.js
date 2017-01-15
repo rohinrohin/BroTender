@@ -849,7 +849,7 @@ var menulist = {
     };
     if (entities.menu) {
       return menutypes[entities.menu[0].value]();
-    } else if (entities.quantity) {
+    } else if (entities.number) {
       if (entities.joinuser) {
         if (entities.joinuser[0].value.toLowerCase() == "@theenkrypt") {
           var hisgroup = -1;
