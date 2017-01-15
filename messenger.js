@@ -373,7 +373,7 @@ app.post('/webhook', (req, res) => {
                             cb(guy, function(guy) {
                               setTimeout(function() {
                                 sendGenericMessage(eventObj.people[guy], {
-                                  text: "Ok, here's the plan: You guys are meeting up for " + eventObj.event + " at " + eventObj.where.name + ". Confirm once you're there, or let us know if you intend to skip.",
+                                  text: "Ok, here's the plan. You guys are meeting up for " + eventObj.event + " in " + eventObj.where.name + " at " + eventObj.time.getHours() +":00 hours. Confirm once you're there, or let us know now if you intend to skip.",
                                   "quick_replies": [
                                     {
                                       "content_type": "text",
@@ -462,6 +462,33 @@ app.post('/webhook', (req, res) => {
           } else if (event.message.quick_reply) {
             console.log("PAYLOAD", event.message.quick_reply);
             if (event.message.quick_reply.payload) {
+              if (event.message.quick_reply.payload.startsWith("CONFIRM")) {
+                if (event.message.quick_reply.payload.split("^")[1] == "YES") {
+                  sendGenericMessage(event.sender.id, {text: "Thanks for letting us know. Hang on while we catch up with everyone. "})
+                  eventObj.confirmed += 1;
+                }
+                if (event.message.quick_reply.payload.split("^")[1] == "NO") {
+                  eventObj.people.splice(eventObj.people.indexOf(event.sender.id), 1);
+                  sendGenericMessage(event.sender.id, {text: "Thanks for letting us know. We're counting you out of the group for now."})
+                }
+                if (eventObj.confirmed == eventObj.people.length) {
+                  eventObj.confirmed = 0;
+                  witflag = false;
+                  for (var guy in eventObj.people) {
+                    var reply = "Hey, Welcome to BroBar, my name is AlphaDawg and I will be your server tonight. Would you like to hear about our specials today?";
+                    sendGenericMessage(eventObj.people[guy], { text: reply })
+                    sendGenericMessage(eventObj.people[guy], {
+                      "attachment": {
+                        "type": "image",
+                        "payload": {
+                          "url": "http://i.giphy.com/l2JhKi0Xs9AQ5tqtG.gif"
+                        }
+                      }
+                    });
+                  }
+                  return;
+                }
+              }
               if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
                 if (!witflag) {
                   event.message.quick_reply.payload = "Order a " + event.message.quick_reply.payload.split("^")[1];
@@ -650,6 +677,7 @@ var disco = function (id, tities) {
       where: [],
       times: [],
       places: [],
+      confirmed: 0
     }
     eventObj.times["l"+eventObj.time.getHours()] = 1;
     request({
