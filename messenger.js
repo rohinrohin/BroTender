@@ -349,7 +349,7 @@ app.post('/webhook', (req, res) => {
                         request("https://maps.googleapis.com/maps/api/distancematrix/json?origins="+origintext+"&destinations="+desttext+"&key=AIzaSyBSs3pcGd_c1zH1ffQNErGR6ETIcdpZogE", function(err, response, body) {
                           for (var guy in eventObj.people) {
                             var kkk="";
-                            console.log("AYYY", body);
+                            console.log("AYYY", body["rows"]);
                             for (var j in body.rows[guy].elements) {
                               if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
                                 request({
