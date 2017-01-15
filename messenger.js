@@ -354,7 +354,7 @@ app.post('/webhook', (req, res) => {
                             for (var j in body.rows[guy].elements) {
                               if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
                                 request({
-                                  url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
+                                  url: 'https://graph.facebook.com/v2.6/' + eventObj.people[guy] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
                                   json: true
                                 }, function (error, response, bodya) {
                                   if (!error && response.statusCode === 200) {
