@@ -240,7 +240,7 @@ $(function () {
         });
 
         dodone = function (e) {
-            $.post('/done', { id: e.id }, function () {
+            $.get('/done?id='+e.id, function () {
                 console.log("done. ")
                 $('#' + e.id).parent().parent().addClass('addgreen')
                 $('#' + e.id).parent().html("done. ")
