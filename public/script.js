@@ -3,6 +3,10 @@ $(function () {
         var arr = []
         var aller_pref = []
         $.get('/getitems', function (data) {
+            $("#injector0").html("");
+            $("#injector1").html("");
+            $("#injector2").html("");
+            $("#injector3").html("");
             arr = data.arr
             aller_pref = data.aller_pref
 
