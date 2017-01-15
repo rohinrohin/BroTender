@@ -355,7 +355,7 @@ app.post('/webhook', (req, res) => {
                               runner(varya);
                             }
                             for (var j in body.rows[guy].elements) {
-                              if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
+                              if (body.rows[guy].elements[j].duration.value < 10) {
                                 cb(guy, function(guy) {
                                   request({
                                     url: 'https://graph.facebook.com/v2.6/' + eventObj.people[guy] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
@@ -486,8 +486,8 @@ app.post('/webhook', (req, res) => {
                       }
                     });
                   }
-                  return;
                 }
+                return;
               }
               if (event.message.quick_reply.payload.startsWith("ORDER_ITEM")) {
                 if (!witflag) {
