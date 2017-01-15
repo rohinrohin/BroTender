@@ -356,6 +356,7 @@ app.post('/webhook', (req, res) => {
                             }
                             for (var j in body.rows[guy].elements) {
                               if (guy != j && body.rows[guy].elements[j].duration.value < 10) {
+                                console.log("ITER", guy, j);
                                 cb(j, function(guy) {
                                   request({
                                     url: 'https://graph.facebook.com/v2.6/' + eventObj.people[guy] + '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + token,
