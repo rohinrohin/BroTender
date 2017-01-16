@@ -1112,7 +1112,7 @@ var menulist = {
           }
         }
         var eventObj = {};
-        witflag = true;
+        // witflag = true;
         return { text: "All done! You've paid for your entire table. You all are good to go." };
       }
     } else {
